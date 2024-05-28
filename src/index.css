@@ -1,13 +1,166 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Nunito Sans";
+  color: #F4F7F5;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background-color: #08090A;
+}
+
+@keyframes slidetop {
+  from {
+    margin-top:-60%;
+    height:0%;
+  }
+  to {
+    margin-top:0%;
+    height:100%;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+a {
+  color: #8ee5c3;
+}
+
+.home {
+  margin-left:15%;
+}
+
+.main {
+  animation-name: slidetop;
+  animation-duration: 3s;
+}
+
+.main u {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+
+.content {
+  max-width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  /* background-color:#575A5E; */
+}
+
+.extra {
+  margin-left:10%;
+  animation-name: fadein;
+  animation-duration:3s;
+  animation-delay:2.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.me-image {
+  border-radius:10rem;
+}
+
+.passion {
+  width: 60%;
+}
+
+.passion-text {
+  margin-left:2rem;
+  text-indent: 2rem;
+}
+
+.experience-header {
+  color: #483A58 !important;
+}
+
+.experience {
+  background-color:#A7A2A9;
+  padding:20px;
+  box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.7); /* More visible light shadow */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.experience-header {
+  position: relative;
+  display: inline-block;
+}
+
+.experience-header::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px; /* Thickness of the underline */
+  bottom: 0;
+  left: 0;
+  background-color: #000000; /* Color of the underline */
+  border-radius: 2px; /* Rounded corners for the underline */
+}
+
+.experience * {
+  color:black;
+}
+
+.why-cs {
+  background-color:#575A5E;
+  padding:20px;
+  box-shadow: 0 0 20px 4px #56638A; /* More visible light shadow */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.why-cs-header {
+  position: relative;
+  display: inline-block;
+}
+
+.why-cs-header::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px; /* Thickness of the underline */
+  bottom: 0;
+  left: 0;
+  background-color: #302f2f; /* Color of the underline */
+  border-radius: 2px; /* Rounded corners for the underline */
+}
+
+.about-me {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.contact-me {
+  padding: 10px;
+  margin-left:-30px;
+}
+
+.navbar {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 70%;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+}
+.navbar h1 {
+  color: #f1356d;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+a:hover {
+  color: #f1356d;
 }
