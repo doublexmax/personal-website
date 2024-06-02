@@ -8,6 +8,7 @@
 
 body {
   background-color: #08090A;
+  overflow-x: hidden;
 }
 
 @keyframes slidetop {
@@ -21,6 +22,17 @@ body {
   }
 }
 
+@keyframes slideright {
+  from {
+    right:-55%;
+    opacity: 0%;
+  }
+  to {
+    right: 0%;
+    opacity: 100%;
+  }
+}
+
 @keyframes fadein {
   from {
     opacity: 0%;
@@ -28,6 +40,10 @@ body {
   to {
     opacity: 100%;
   }
+}
+
+.personal-logo {
+  height:3rem;
 }
 
 a {
@@ -57,10 +73,10 @@ a {
 
 .extra {
   margin-left:10%;
-  animation-name: fadein;
+  animation-name: slideright;
   animation-duration:3s;
   animation-delay:2.5s;
-  opacity: 0;
+  opacity: 0%;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
 }
@@ -78,8 +94,17 @@ a {
   text-indent: 2rem;
 }
 
+.experience-container {
+  animation-name: fadein;
+  animation-duration: 4s;
+  animation-delay: 5.5s;
+  opacity: 0%;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
 .experience-header {
-  color: #483A58 !important;
+  color: #56638A !important;
 }
 
 .experience {
@@ -109,6 +134,15 @@ a {
   color:black;
 }
 
+.why-cs-container {
+  animation-name: fadein;
+  animation-duration: 5s;
+  animation-delay: 6.5s;
+  opacity: 0%;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
 .why-cs {
   background-color:#575A5E;
   padding:20px;
@@ -119,6 +153,7 @@ a {
 .why-cs-header {
   position: relative;
   display: inline-block;
+  color: #3c994d;
 }
 
 .why-cs-header::after {
@@ -132,9 +167,10 @@ a {
   border-radius: 2px; /* Rounded corners for the underline */
 }
 
-.about-me {
-  font-size: 1rem;
-  line-height: 1.8;
+.spacer {
+  margin-top:20px;
+  content: " ";
+  display: block;
 }
 
 .contact-me {
