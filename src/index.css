@@ -16,6 +16,79 @@ body {
   height: 100%;
 }
 
+.typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2em;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  padding-right: 10px;
+  border-right: 0.15em solid rgb(184, 181, 181);
+  border-radius:1.2px;
+  white-space: nowrap; /* Keeps the content on a single line */
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  width: fit-content;
+  animation:
+    0.9s steps(12) typing2 3.2s,
+    1.2s steps(9) erase 2s,
+    0.8s steps(8) typing,
+    blinkcursor 1.1s step-end infinite;
+
+}
+
+.typewriter::before {
+  content: "$ whoami";
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-delay: 3.2s;
+  animation-name: changetext;
+}
+
+.typerwriter::after {
+  animation-delay: 6s;
+  animation-name: dropcursor;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes blinkcursor {
+  from, to { border-color: transparent }
+  50% { border-color: rgb(184, 181, 181); }
+}
+
+
+
+@keyframes typing {
+  from { width: 0ch }
+  to { width: 6ch }
+}
+
+@keyframes erase {
+  from {
+      width: 6ch;
+  }
+  to {
+      width: 0ch;
+  }
+}
+
+@keyframes typing2 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 9ch;
+  }
+}
+
+@keyframes changetext {
+  from {
+    content: "$ whoami";
+  }
+  to {
+    content: "Maxx Tandon";
+  }
+}
+
 @keyframes slidetop {
   from {
     margin-top:-60%;
