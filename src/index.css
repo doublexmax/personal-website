@@ -28,7 +28,7 @@ body {
   -webkit-animation-fill-mode: forwards;
   width: fit-content;
   animation:
-    0.9s steps(12) typing2 3.2s,
+    0.9s steps(14) typing2 3.2s,
     1.2s steps(9) erase 2s,
     0.8s steps(8) typing,
     blinkcursor 1.1s step-end infinite;
@@ -85,7 +85,7 @@ body {
     content: "$ whoami";
   }
   to {
-    content: "Maxx Tandon";
+    content: "> Maxx Tandon";
   }
 }
 
