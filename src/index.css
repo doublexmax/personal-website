@@ -23,6 +23,7 @@ body {
   padding-right: 10px;
   border-right: 0.15em solid rgb(184, 181, 181);
   border-radius:1.2px;
+  margin-top: 4px;
   white-space: nowrap; /* Keeps the content on a single line */
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
@@ -48,6 +49,11 @@ body {
   animation-name: dropcursor;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
+}
+
+.link-container {
+  display: flex;
+  color: white;
 }
 
 @keyframes blinkcursor {
@@ -128,13 +134,46 @@ a {
   color: #8ee5c3;
 }
 
-.home {
+.home, .portfolio {
   margin-left:15%;
+  margin-top: -12px;
 }
 
 .main {
   animation-name: slidetop;
   animation-duration: 3s;
+}
+
+.btn-portfolio {
+  animation-name: fadein;
+  animation-delay:5s;
+  animation-duration:2s;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  opacity: 0;
+  background-color:darkred;
+}
+
+.btn {
+  transform: scale(1);
+  transition:0.2s ease-out;
+  color: white;
+}
+
+.btn:hover {
+  transition-property: transform, background-color;
+  transition-duration:0.2s;
+  transform: scale(1.1);
+  color: cornsilk;
+  background-color: crimson;
+}
+
+.bi-arrow-right::before {
+  color: black;
+  width: 1em;
+  display: inline-block;
+  padding: 1px;
+  font-size: large;
 }
 
 .main u {
@@ -231,7 +270,7 @@ a {
 .why-cs-header {
   position: relative;
   display: inline-block;
-  color: #3c994d;
+  color: #53dd6c;
 }
 
 .why-cs-header::after {
@@ -277,4 +316,55 @@ a {
 }
 a:hover {
   color: #f1356d;
+}
+
+.portfolio .row {
+  max-width: 80%;
+}
+
+.card-title {
+  color: #53dd6c;
+}
+
+.card-text {
+  font-size: 15px;
+}
+
+.card-img-top {
+  border: 1px solid purple;
+  border-radius: 2px;
+  height: 100%;
+}
+
+.card-body button {
+  color: cornsilk;
+}
+
+
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-header {
+  color: #FFC857;
+  border-bottom: 1px solid #f2f2f2;
+  padding-bottom: 4px;
+  width: 50%;
+}
+
+.first-row {
+  animation-name: fadein;
+  animation-duration: 5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
 }

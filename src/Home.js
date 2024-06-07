@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 function Home() {
     return (
         <div className="home">
@@ -13,6 +14,9 @@ function Home() {
                         <a href="https://cegdealers.com/" target="_blank" rel="noreferrer">CEG Dealer School</a>
                         .
                     </p>
+                    <div>
+                        <a className="btn btn-portfolio" href="/portfolio">Portfolio <i className="bi bi-arrow-right"></i></a>
+                    </div>
                 </div>
                 <div className="extra col-3">
                     <figure className="figure">
@@ -46,7 +50,7 @@ function Home() {
                         applied and intertwined with various ideas from other fields.
                         <br className="spacer"></br>
                         With computer science built on the foundations of math in an applied format, I enjoy using it to bridge the gap between various studies in both the humanities and STEM to allow
-                        the subjects to evolve with each other, not alone -- for each discipline can only do so much on its own, as they are all but a reflection of us.
+                        the subjects to evolve with each other, not alone -- for each discipline can only do so much on its own, as they are all but a reflection of us and how we learn together.
                     </p>
                 </div>
             </div>
