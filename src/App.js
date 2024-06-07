@@ -22,6 +22,8 @@ function App() {
             </Route>
           </Routes>
         </div>
+        <Analytics />
+        <SpeedInsights />
       </div>
     </Router>
   );
