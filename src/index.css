@@ -368,3 +368,90 @@ a:hover {
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
 }
+
+@media (max-width: 768px) {
+  .navbar .links {
+    margin-left: 15%;
+  }
+
+  .navbar a {
+    margin: auto;
+  }
+
+  .home {
+    width: 100%;
+  }
+
+  .row {
+    display: block;
+  }
+
+  .main {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .extra {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .experience * {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .col-9 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .content {
+    margin: 0;
+  }
+
+  .card {
+    width: fit-content;
+  }
+
+  .portfolio .row {
+    max-width: 100%;
+    width: 100%;
+    margin:auto;
+  }
+
+  .portfolio-header {
+    width: -webkit-fill-available;
+  }
+
+  .first-row .col-md {
+    display: inline;
+  }
+
+  .btn-danger {
+    font-size: small;
+  }
+
+}
+
+
+@media (min-width: 576px) and (max-width: 768px) { 
+  .navbar .links {
+    margin: auto;
+  }
+
+  .content {
+    margin-top: 14px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .col-md {
+    margin-bottom: 2vh;
+  }
+
+  .experience-container {
+    margin-top: 2vh;
+  }
+}

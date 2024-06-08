@@ -27,7 +27,7 @@ function Portfolio() {
                             <div class="card-body">
                                 <h5 class="card-title">A Fischer Random Chess Engine</h5>
                                 <p class="card-text">Multiple machine learning models built to evaluate and play Fischer Random Chess, which is chess with randomized starting positions.</p>
-                                <a href="https://github.com/willredding314/FischerRandom" class="btn btn-danger" target="_blank" rel="noreferrer">Check out the repository <i className="bi bi-arrow-right"></i></a>
+                                <a href="https://github.com/willredding314/FischerRandom" class="btn btn-danger btn-fischer-random" target="_blank" rel="noreferrer">Check out the repository <i className="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
