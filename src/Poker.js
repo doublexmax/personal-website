@@ -32,7 +32,6 @@ export default function Poker() {
       return
     }
 
-    console.log(simRNG, 'rng set');
   }, [totalSims]);
 
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function Poker() {
 
   useEffect(() => {
     if (simHand) {
-      console.log(simHand);
       const card1_ele = document.getElementById('card1');
       const card2_ele = document.getElementById('card2');
 
@@ -75,11 +73,9 @@ export default function Poker() {
 
   useEffect(() => {
     if (!isSimulating) {
-      console.log("can't answer yet big boy");
       return
     }
 
-    console.log(simAnswer, simHand, simResponse, simRNG, 'sim answered');
     
     var answer;
     const sim_details = document.getElementsByClassName('sim-details')[0];
@@ -148,11 +144,10 @@ export default function Poker() {
 
   const handleAction = (actionType) => {
     if (isSimulating) {
-      console.log(`i think ${actionType}`);
       
       setSimResponse(actionType);
     } else {
-      console.log(`how say ${actionType} if no sim?`);
+      console.log(`no sim running`);
     }
   }
 
@@ -180,7 +175,7 @@ export default function Poker() {
   }
 
   function clearRun() {
-    console.log('clearing run');
+    //console.log('clearing run');
 
     const sim_details = document.getElementsByClassName('sim-details')[0];
 
@@ -206,7 +201,6 @@ export default function Poker() {
 
     sim_details.innerText = 'Running sim.';
 
-    console.log('triggered', position, hand, answer);
     if (!position || !hand || !answer) {
       setIsSimulating(false);
       return;
@@ -219,10 +213,8 @@ export default function Poker() {
         document.getElementsByClassName(`chips ${position}`)[0].innerText = "RAISE";
         break;
       } else {
-        console.log('fold', cur_position);
         document.getElementsByClassName(`seat ${cur_position}`)[0].className += ' folded';
       }
-      console.log('sleep?');
       if (pause) await sleep(800);
     }
 

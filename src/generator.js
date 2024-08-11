@@ -74,7 +74,6 @@ export async function nineMaxGenerator() {
         }
         else {
             hero_data = await get_chart(hero_position);
-            console.log(hero_data, 'chart from charts.json');
         }
         
 
@@ -85,7 +84,6 @@ export async function nineMaxGenerator() {
             let hero_response = hero_data[hero_cards] || [0,0];
 
             gen_running = false;
-            console.log(num_to_cards(hero_cards), 'generated cards');
             return [num_to_cards(hero_cards), hero_response, hero_position];
         }
     }

@@ -84,7 +84,6 @@ export function Chart({position, visible, opener, three_better}) {
                             
                             const fold_range = 100 - call_range - raise_range;
 
-                            console.log([call_range,raise_range,fold_range]);
                             event.target.style.background = getGradientStyle(call_range, raise_range);
                             gto[cards_to_num(event.target.textContent)] = [call_range,raise_range];
                             
