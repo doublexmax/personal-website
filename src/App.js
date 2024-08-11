@@ -8,24 +8,41 @@ import { Analytics } from "@vercel/analytics/react"
 import Navbar from './Navbar';
 import Home from './Home';
 import Portfolio from './Portfolio';
+import Poker from './Poker';
+
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Navbar></Navbar>
-        <div className="content">
-          <Routes>
-            <Route exact path="/" element={<Home />}>
-            </Route>
-            <Route exact path="/portfolio" element={<Portfolio />}>
-            </Route>
-          </Routes>
-        </div>
-        <Analytics />
-        <SpeedInsights />
-      </div>
+      <Routes>
+        <Route exact path="/" element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        <Route exact path="/portfolio" element={
+            <Layout>
+              <Portfolio />
+            </Layout>
+          }
+        />
+        <Route exact path="/gto-trainer" element={<Poker />} />
+      </Routes>
+      <Analytics />
+      <SpeedInsights />
     </Router>
+  );
+}
+
+function Layout({ children }) {
+  return (
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        {children}
+      </div>
+    </div>
   );
 }
 

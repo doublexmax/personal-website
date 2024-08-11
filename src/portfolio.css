@@ -1,0 +1,22 @@
+body {
+    display: unset !important;
+    justify-content: unset !important;
+    align-items: unset !important;
+    margin: unset !important;
+    background: radial-gradient(circle, #008000, #004d00, #001a00, #000000);
+}
+
+.portfolio-header {
+    color: #FFC857;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.portfolio .row {
+    max-width: 80%;
+}
+
+.portfolio-header {
+    width: -webkit-fill-available;
+}

@@ -318,10 +318,6 @@ a:hover {
   color: #f1356d;
 }
 
-.portfolio .row {
-  max-width: 80%;
-}
-
 .card-title {
   color: #53dd6c;
 }
@@ -354,16 +350,18 @@ a:hover {
   flex-direction: column;
 }
 
-.portfolio-header {
-  color: #FFC857;
-  border-bottom: 1px solid #f2f2f2;
-  padding-bottom: 4px;
-  width: 50%;
-}
-
 .first-row {
   animation-name: fadein;
   animation-duration: 5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.second-row {
+  animation-name: fadein;
+  animation-duration: 5s;
+  animation-delay:1s;
   opacity: 0;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;
@@ -415,15 +413,6 @@ a:hover {
     width: fit-content;
   }
 
-  .portfolio .row {
-    max-width: 100%;
-    width: 100%;
-    margin:auto;
-  }
-
-  .portfolio-header {
-    width: -webkit-fill-available;
-  }
 
   .first-row .col-md {
     display: inline;
