@@ -10,7 +10,20 @@ import './poker.css';
 export function Chart({position, visible, opener, three_better}) {
     var chartMade = useRef(false);
 
-    const [gto, setGTO] = useState(null);
+    useEffect(() => {
+        if (opener) {
+            chartMade.current = (document.getElementById(`${position}_vs_${opener}`)) == true;
+        }
+        else {
+            chartMade.current = (document.getElementById(`${position}`)) ==  true;
+        }
+    })
+
+    const [gto, setGTO] = useState();
+
+    if (visible) {
+        console.log('im visible', position, chartMade);
+    }
 
     const getGradientStyle = (call, raise, fold) => `linear-gradient(90deg, red ${Number(raise)}%, #23a607 ${Number(raise)}% ${Number(call) + Number(raise)}%, aqua ${Number(call)+Number(raise)}% 100%)`
 
@@ -19,7 +32,7 @@ export function Chart({position, visible, opener, three_better}) {
             return
         }
 
-        const serialized = Cookies.load(position);
+        const serialized = JSON.parse(localStorage.getItem(position));
 
         if (serialized) {
             setGTO(serialized);
@@ -27,13 +40,8 @@ export function Chart({position, visible, opener, three_better}) {
         else {
             fetch('/charts.json').then(response => response.json()).then(data => {
                 setGTO(data[position]);
-                const expires = new Date();
-                expires.setDate(Date.now() + 1000 * 60 * 60 * 24);
-                Cookies.save(
-                    position,
-                    JSON.stringify(data[position]),
-                    {path: '/', expires}
-                )
+                
+                localStorage.setItem(position, JSON.stringify(data[position]));
                 })
                 .catch((error) => console.log(error, 'error'));
         }
@@ -42,7 +50,14 @@ export function Chart({position, visible, opener, three_better}) {
     useEffect(() => {
         if (!chartMade.current) {
 
-            const table = document.getElementById(position);
+            var table;
+
+            if (opener) {
+                table = document.getElementById(`${position}_vs_${opener}`);
+            }
+            else {
+                table = document.getElementById(position);
+            }
 
             if (table && gto) {
                 for (let row = 0; row < 13; row++) {
@@ -87,13 +102,7 @@ export function Chart({position, visible, opener, three_better}) {
                             event.target.style.background = getGradientStyle(call_range, raise_range);
                             gto[cards_to_num(event.target.textContent)] = [call_range,raise_range];
                             
-                            const expires = new Date();
-                            expires.setDate(Date.now() + 1000 * 60 * 60 * 24);
-                            Cookies.save(
-                                position,
-                                JSON.stringify(gto),
-                                {path: '/', expires}
-                            )
+                            localStorage.setItem(position, JSON.stringify(gto));
                         });
                         tr.appendChild(td);
                     }
@@ -108,7 +117,7 @@ export function Chart({position, visible, opener, three_better}) {
 
     return (
         <div className="Chart">
-            <table id={position} style={{display:visible ? '' : 'none'}}></table>
+            {(opener && <table id={`${position}_vs_${opener}`} style={{display:visible ? '' : 'none'}}></table>) ||  <table id={position} style={{display:visible ? '' : 'none'}}></table>}
         </div>
     )
 }

@@ -2,8 +2,8 @@ function Navbar() {
     return ( 
         <nav className="navbar">
             <a href="/" className="link-container">
-                <img src="MT.png" className="personal-logo"></img>
-                <h2 className="typewriter"></h2>
+                <img src="MT.png" className="personal-logo mr-4"></img>
+                <p className="typewriter"></p>
             </a>
             <div className="links">
                 <a href="https://www.linkedin.com/in/maxxtandon/" target="_blank" rel="noreferrer">LinkedIn</a>

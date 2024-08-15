@@ -12,6 +12,8 @@ import './poker.css';
 
 export default function Poker() {
   const [selectedPosition, setSelectedPosition] = useState('utg');
+  const [selected3BPosition, setSelected3BPosition] = useState('empty');
+
   const [raiseValue, setRaiseValue] = useState(100);
   const [callValue, setCallValue] = useState(0);
   
@@ -38,10 +40,28 @@ export default function Poker() {
     nine_max_positions.forEach((position) => {
       const table = document.getElementById(position);
       if (table) {
-        table.style.display = position === selectedPosition ? 'table' : 'none';
+        if (selected3BPosition === 'empty') {
+          table.style.display = position === selectedPosition ? 'table' : 'none';
+        } else {
+          table.style.display = 'none';
+        }
       }
     });
   }, [selectedPosition]);
+
+  useEffect(() => {
+    nine_max_positions.forEach((position) => {
+      const table = document.getElementById(`${position}_vs_${selected3BPosition}`);
+      if (table) {
+        if (selected3BPosition === 'empty') {
+          table.style.display = 'none';
+        } else {
+          table.style.display = position === selected3BPosition ? 'table' : 'none';
+        }
+      }
+    });
+  }, [selected3BPosition]);
+
 
   useEffect(() => {
     if (simHand) {
@@ -140,6 +160,12 @@ export default function Poker() {
   const handleSelectChange = (event) => {
     const newPosition = event.target.value;
     setSelectedPosition(newPosition);
+    setSelected3BPosition('empty'); // Reset 3B position when RFI changes
+  };
+
+  const handleSelect3BChange = (event) => {
+    const newPosition = event.target.value;
+    setSelected3BPosition(newPosition);
   };
 
   const handleAction = (actionType) => {
@@ -233,9 +259,9 @@ export default function Poker() {
         <div id="popup">
           <h2>Chart - {selectedPosition.toUpperCase()}</h2>
           <div className="container mt-3" id="select-position">
-            <label htmlFor="positionSelect" className="form-label mr-2">Select Position:</label>
+            <label htmlFor="positionRFISelect" className="form-label mr-2">Select RFI:</label>
             <select
-              id="positionSelect"
+              id="positionRFISelect"
               className="form-select"
               value={selectedPosition}
               onChange={handleSelectChange}
@@ -246,6 +272,26 @@ export default function Poker() {
                 </option>
               ))}
             </select>
+            {selectedPosition && 
+                <div>
+                  <label htmlFor="position3bSelect" className="form-label mr-2">Select 3B:</label>
+                  <select
+                  id="positionRFISelect"
+                  className="form-select"
+                  value={selected3BPosition}
+                  onChange={handleSelect3BChange}
+                >
+                  <option key='empty' value='empty'>
+                    -----
+                  </option>
+                  {nine_max_positions.map((position) => (
+                    <option key={position} value={position}>
+                      {position.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+                </div>
+              }
             <div className="mt-3">
             </div>
             <div className="slide-container">
@@ -259,7 +305,13 @@ export default function Poker() {
             </div>
           </div>
           {nine_max_positions.map((position) => (
-            <Chart key={position} position={position} visible={selectedPosition === position} />
+            console.log('triggered'),
+            <Chart key={position} position={position} visible={selected3BPosition === 'empty' && selectedPosition === position} />
+          ))}
+
+          {selected3BPosition && nine_max_positions.map((position) => (
+            console.log(selected3BPosition, position, selected3BPosition === position),
+            <Chart key={`${position}_vs_${selectedPosition}`} position={position} opener={selectedPosition} visible={selected3BPosition === position}></Chart>
           ))}
           <button id="closeBtn" onClick={hidePopup}>Close</button>
         </div>

@@ -7,11 +7,7 @@ const nine_max_spots = ['utg', 'utg1', 'utg2', 'lj', 'hj', 'co', 'button', 'sb',
 async function get_chart(hero_position) {
     return fetch('/charts.json').then(response => response.json()).then(data => {
         const hero_chart = data[hero_position];
-        Cookies.save(
-            hero_position,
-            JSON.stringify(hero_chart),
-            {path: '/', domain: 'localhost'},
-        );
+        localStorage.setItem(hero_position, JSON.stringify(hero_chart));
         
         return hero_chart;
     })
@@ -26,8 +22,6 @@ export async function nineMaxGenerator() {
             console.log('gen already running');
             return 
         }
-
-        var data = Cookies.loadAll();
 
         let hero_position_idx = Math.floor(Math.random() * 9);
         let hero_position = nine_max_spots[hero_position_idx];
@@ -69,8 +63,8 @@ export async function nineMaxGenerator() {
 
         var hero_data;
         //console.log(data[hero_position], 'hero position data', hero_position);
-        if (data[hero_position] && typeof data[hero_position] === 'string') {
-            hero_data = JSON.parse(data[hero_position]); 
+        if (localStorage.getItem(hero_position) && typeof localStorage.getItem(hero_position) === 'string') {
+            hero_data = JSON.parse(localStorage.getItem(hero_position)); 
         }
         else {
             hero_data = await get_chart(hero_position);
