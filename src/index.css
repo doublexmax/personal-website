@@ -18,7 +18,7 @@ body {
 
 .typewriter {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 2.5vw;
+  font-size: 1.65vw;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
   padding-right: 10px;
   border-right: 0.15em solid rgb(184, 181, 181);
@@ -367,7 +367,7 @@ a:hover {
 .second-row {
   animation-name: fadein;
   animation-duration: 5s;
-  animation-delay:1s;
+  animation-delay:.5s;
   opacity: 0;
   animation-fill-mode: forwards;
   -webkit-animation-fill-mode: forwards;

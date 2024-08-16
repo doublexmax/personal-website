@@ -59,21 +59,18 @@ body {
   height: 100%;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.5);
-  /* Optional: semi-transparent overlay */
 }
 
 .seat {
   position: absolute;
   width: 4vw;
-  /* Adjust seat width relative to container width */
   height: 4vw;
-  /* Adjust seat height relative to container width */
   background-color: #e74c3c;
   color: white;
   text-align: center;
   line-height: 4vw;
   border-radius: 50%;
-  /* Keep seat shape circular */
+  border: 2px solid grey;
 }
 
 .card-display {

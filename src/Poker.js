@@ -9,6 +9,7 @@ import { nine_max_positions, suit_colors } from './info';
 import { sleep } from './utils';
 
 import './poker.css';
+import { UNSAFE_NavigationContext } from 'react-router-dom';
 
 export default function Poker() {
   const [selectedPosition, setSelectedPosition] = useState('utg');
@@ -50,13 +51,16 @@ export default function Poker() {
   }, [selectedPosition]);
 
   useEffect(() => {
-    nine_max_positions.forEach((position) => {
-      const table = document.getElementById(`${position}_vs_${selected3BPosition}`);
-      if (table) {
-        if (selected3BPosition === 'empty') {
-          table.style.display = 'none';
-        } else {
-          table.style.display = position === selected3BPosition ? 'table' : 'none';
+    nine_max_positions.forEach((position, idx) => {
+      if (idx < nine_max_positions[selected3BPosition]) {
+
+        const table = document.getElementById(`${position}_vs_${selected3BPosition}`);
+        if (table) {
+          if (selected3BPosition === 'empty') {
+            table.style.display = 'none';
+          } else {
+            table.style.display = position === selected3BPosition ? 'table' : 'none';
+          }
         }
       }
     });
@@ -194,7 +198,7 @@ export default function Poker() {
     setIsSimulating(true); // Mark simulation as in progress
 
     const runGenerator = await nineMaxGenerator();
-    await runGenerator().then((data) => simulateHand(data[2], data[1], data[0]));
+    await runGenerator().then((data) => simulateHand(data[3], data[2], data[1], data[0]));
 
 
     return 'Simulation completed';
@@ -219,7 +223,10 @@ export default function Poker() {
     }
   }
 
-  async function simulateHand(position, answer, hand) {
+  async function simulateHand(history, position, answer, hand) {
+    //console.log(history, position, answer, hand);
+    const hero_idx = nine_max_positions.indexOf(position);
+
     clearRun();
     await sleep(250);
 
@@ -234,12 +241,15 @@ export default function Poker() {
   
     setSimAnswer(answer);
 
-    for (let cur_position of nine_max_positions) {
-      if (cur_position === position) {
+    for (let i = 0; i < nine_max_positions.length; i++) {
+      if (history.includes(nine_max_positions[i])) { // someone raised
+        document.getElementsByClassName(`chips ${nine_max_positions[i]}`)[0].innerText = "OPEN";
+      }
+      else if (i == hero_idx) {
         document.getElementsByClassName(`chips ${position}`)[0].innerText = "RAISE";
         break;
       } else {
-        document.getElementsByClassName(`seat ${cur_position}`)[0].className += ' folded';
+        document.getElementsByClassName(`seat ${nine_max_positions[i]}`)[0].className += ' folded';
       }
       if (pause) await sleep(800);
     }
@@ -248,7 +258,7 @@ export default function Poker() {
 
     setSimRNG(rng);
     setSimHand(hand);
-    sim_details.innerText = `You are the ${position.toUpperCase()} with ${hand}. RNG: ` + rng;
+    sim_details.innerText = history.length ? `You are the ${position.toUpperCase()} with ${hand} facing an open from the ${history[0].toUpperCase()}. RNG: ` + rng :  `You are the ${position.toUpperCase()} with ${hand}. RNG: ` + rng;
     document.getElementsByClassName('sim-buttons')[0].style.display = "inline-flex";
   }
 
@@ -257,7 +267,7 @@ export default function Poker() {
       <PokerNavbar pause={pause} setPause={setPause} invertRNG={invertRNG} setInvertRNG={setInvertRNG} />
       <div id="popupBackground">
         <div id="popup">
-          <h2>Chart - {selectedPosition.toUpperCase()}</h2>
+          <h2>Chart - {(selected3BPosition !== 'empty' && `${selected3BPosition.toUpperCase()} Against ${selectedPosition.toUpperCase()}`) || selectedPosition.toUpperCase()}</h2>
           <div className="container mt-3" id="select-position">
             <label htmlFor="positionRFISelect" className="form-label mr-2">Select RFI:</label>
             <select
@@ -284,7 +294,8 @@ export default function Poker() {
                   <option key='empty' value='empty'>
                     -----
                   </option>
-                  {nine_max_positions.map((position) => (
+                  {nine_max_positions.map((position, idx) => (
+                    idx > nine_max_positions.indexOf(selectedPosition) &&
                     <option key={position} value={position}>
                       {position.toUpperCase()}
                     </option>
@@ -305,12 +316,11 @@ export default function Poker() {
             </div>
           </div>
           {nine_max_positions.map((position) => (
-            console.log('triggered'),
             <Chart key={position} position={position} visible={selected3BPosition === 'empty' && selectedPosition === position} />
           ))}
 
-          {selected3BPosition && nine_max_positions.map((position) => (
-            console.log(selected3BPosition, position, selected3BPosition === position),
+          {nine_max_positions.map((position, idx) => (
+            idx > nine_max_positions.indexOf(selectedPosition) &&
             <Chart key={`${position}_vs_${selectedPosition}`} position={position} opener={selectedPosition} visible={selected3BPosition === position}></Chart>
           ))}
           <button id="closeBtn" onClick={hidePopup}>Close</button>

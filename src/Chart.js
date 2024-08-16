@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import Cookies from 'react-cookies';
 
 import { getPokerHand } from "./utils";
 
@@ -12,37 +11,56 @@ export function Chart({position, visible, opener, three_better}) {
 
     useEffect(() => {
         if (opener) {
-            chartMade.current = (document.getElementById(`${position}_vs_${opener}`)) == true;
+            chartMade.current = document.getElementById(`${position}_vs_${opener}`) == true;
         }
         else {
-            chartMade.current = (document.getElementById(`${position}`)) ==  true;
+            chartMade.current = document.getElementById(`${position}`) == true;
         }
+        //console.log(position, opener, chartMade.current, visible);
     })
 
     const [gto, setGTO] = useState();
 
-    if (visible) {
-        console.log('im visible', position, chartMade);
-    }
+    // if (visible) {
+    //     console.log('im visible', position, chartMade);
+    // }
 
-    const getGradientStyle = (call, raise, fold) => `linear-gradient(90deg, red ${Number(raise)}%, #23a607 ${Number(raise)}% ${Number(call) + Number(raise)}%, aqua ${Number(call)+Number(raise)}% 100%)`
+    const getGradientStyle = (call, raise) => `linear-gradient(90deg, red ${Number(raise)}%, #23a607 ${Number(raise)}% ${Number(call) + Number(raise)}%, aqua ${Number(call)+Number(raise)}% 100%)`
 
     useEffect(() => {
         if (gto) {
             return
         }
 
-        const serialized = JSON.parse(localStorage.getItem(position));
+        var serialized;
 
+        if (opener) {
+            serialized = localStorage.getItem(`${position}_vs_${opener}`);
+        }
+        else {
+            serialized = localStorage.getItem(position);
+        }
+
+        //console.log(`${position}_vs_${opener}`, serialized);
         if (serialized) {
-            setGTO(serialized);
+            setGTO(JSON.parse(serialized));
         }
         else {
             fetch('/charts.json').then(response => response.json()).then(data => {
-                setGTO(data[position]);
-                
-                localStorage.setItem(position, JSON.stringify(data[position]));
-                })
+                //console.log('fetching chart', opener, position);
+                if (opener) {
+                    return [data[`${position}_vs_${opener}`], `${position}_vs_${opener}`]
+                }
+                else {
+                    return [data[position], position]
+                }
+                }).then(
+                    (res) => {
+                        //console.log(res[0], res[1], 'received');
+                        setGTO(res[0]);
+                        localStorage.setItem(res[1], JSON.stringify(res[0]));
+                    }
+                )
                 .catch((error) => console.log(error, 'error'));
         }
     }, [gto]);
@@ -68,26 +86,22 @@ export function Chart({position, visible, opener, three_better}) {
                         
                         var response = gto[cards_to_num(hand)];
 
-                        var call,raise_rate,fold_rate;
+                        var call,raise_rate;
 
                         if (!response) {
                             call = 0;
-                            fold_rate = 100;
                             raise_rate = 0;
                         }
                         else if (response.length === 2) {
                             call = response[0];
                             raise_rate = response[1];
-                            fold_rate = 100 - call - raise_rate;
                         }
                         else if (response.length === 3) {
                             call = response[0];
-                            fold_rate = response[1];
                             raise_rate = response[2];
                         }
                         else {
                             call = 0;
-                            fold_rate = 0;
                             raise_rate = 100;
                         }
                         
@@ -97,12 +111,15 @@ export function Chart({position, visible, opener, three_better}) {
                             const call_range = Number(document.getElementById('call-range').value);
                             const raise_range = Number(document.getElementById('raise-range').value);
                             
-                            const fold_range = 100 - call_range - raise_range;
-
                             event.target.style.background = getGradientStyle(call_range, raise_range);
                             gto[cards_to_num(event.target.textContent)] = [call_range,raise_range];
                             
-                            localStorage.setItem(position, JSON.stringify(gto));
+                            if (opener) {
+                                localStorage.setItem(`${position}_vs_${opener}`, JSON.stringify(gto));
+                            }
+                            else {
+                                localStorage.setItem(position, JSON.stringify(gto));
+                            }
                         });
                         tr.appendChild(td);
                     }
