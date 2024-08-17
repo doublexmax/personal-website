@@ -1,4 +1,4 @@
-export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG}) {
+export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, setRFIOnly, threeBetOnly, setThreeBetOnly}) {
     function togglePopup() {
         if (document.getElementById("popupBackground").style.display === "flex") {
             hidePopup();
@@ -24,6 +24,34 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG}) {
                 <input className="form-check-input" type="checkbox" value="" id="pause-check" checked={pause} onChange={() => setPause(pause ^ 1)} />
                 <label className="form-check-label pause-label" htmlFor="pause-check">
                     <p data-bs-toggle="tooltip" title="Fold through until hero's action with pauses.">Slow Mode</p>
+                </label>
+            </div>
+            <div className="form-check">
+                <input className="form-check-input" type="checkbox" value="" id="rfi-check" checked={RFIOnly} onChange={
+                    () => {
+                            setRFIOnly(RFIOnly ^ 1);
+                            if (RFIOnly == 0 && threeBetOnly == 1) {
+                                setThreeBetOnly(false);
+                            }
+                        }
+                    } 
+                />
+                <label className="form-check-label rfi-label" htmlFor="rfi-check">
+                    <p data-bs-toggle="tooltip" title="Generate only raise-first-in spots.">RFI Only</p>
+                </label>
+            </div>
+            <div className="form-check">
+                <input className="form-check-input" type="checkbox" value="" id="threebet-check" checked={threeBetOnly}  onChange={
+                    () => {
+                            setThreeBetOnly(threeBetOnly ^ 1);
+                            if (threeBetOnly == 0 && RFIOnly == 1) {
+                                setRFIOnly(false);
+                            }
+                        }
+                    }
+                />
+                <label className="form-check-label threebet-label" htmlFor="threebet-check">
+                    <p data-bs-toggle="tooltip" title="Generate only three-bet spots.">3B Only</p>
                 </label>
             </div>
             <div className="form-check">

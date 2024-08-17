@@ -29,6 +29,7 @@ export async function nineMaxGenerator(rfi_only, three_bet_only) {
 
         
         // support additional spots
+        //console.log('rfi', rfi_only,'3b', three_bet_only);
 
         if (!rfi_only) {
             for (let i = 0; i < hero_position_idx; i++) {
@@ -68,8 +69,9 @@ export async function nineMaxGenerator(rfi_only, three_bet_only) {
                 }
             }
         }
-        else if (three_bet_only) {
-            if (action['b'] === undefined) {
+        
+        if (three_bet_only) {
+            if (!action['b']) {
                 return runGenOnce();
             }
         }
@@ -93,6 +95,10 @@ export async function nineMaxGenerator(rfi_only, three_bet_only) {
             }
         }
         else { // hero is RFI
+            if (hero_position == 'bb') {
+                hero_position = 'sb';
+            }
+            
             if (localStorage.getItem(hero_position) && typeof localStorage.getItem(hero_position) === 'string') {
                 hero_data = JSON.parse(localStorage.getItem(hero_position)); 
             }

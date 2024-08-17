@@ -9,7 +9,6 @@ import { nine_max_positions, suit_colors } from './info';
 import { sleep } from './utils';
 
 import './poker.css';
-import { UNSAFE_NavigationContext } from 'react-router-dom';
 
 export default function Poker() {
   const [selectedPosition, setSelectedPosition] = useState('utg');
@@ -20,6 +19,8 @@ export default function Poker() {
   
   const [pause, setPause] = useState(true);
   const [invertRNG, setInvertRNG] = useState(false);
+  const [RFIOnly, setRFIOnly] = useState(false);
+  const [threeBetOnly, setThreeBetOnly] = useState(false);
   
   const [simResponse, setSimResponse] = useState();
   const [simAnswer, setSimAnswer] = useState();
@@ -196,8 +197,9 @@ export default function Poker() {
     }
 
     setIsSimulating(true); // Mark simulation as in progress
-
-    const runGenerator = await nineMaxGenerator();
+    console.log('rfi only', RFIOnly);
+    console.log('3b only', threeBetOnly);
+    const runGenerator = await nineMaxGenerator(RFIOnly, threeBetOnly);
     await runGenerator().then((data) => simulateHand(data[3], data[2], data[1], data[0]));
 
 
@@ -264,7 +266,12 @@ export default function Poker() {
 
   return (
     <div className="Poker">
-      <PokerNavbar pause={pause} setPause={setPause} invertRNG={invertRNG} setInvertRNG={setInvertRNG} />
+      <PokerNavbar 
+        pause={pause} setPause={setPause} 
+        invertRNG={invertRNG} setInvertRNG={setInvertRNG} 
+        RFIOnly={RFIOnly} setRFIOnly={setRFIOnly}
+        threeBetOnly={threeBetOnly} setThreeBetOnly={setThreeBetOnly} 
+      />
       <div id="popupBackground">
         <div id="popup">
           <h2>Chart - {(selected3BPosition !== 'empty' && `${selected3BPosition.toUpperCase()} Against ${selectedPosition.toUpperCase()}`) || selectedPosition.toUpperCase()}</h2>

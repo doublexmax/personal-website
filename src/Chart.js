@@ -10,14 +10,16 @@ export function Chart({position, visible, opener, three_better}) {
     var chartMade = useRef(false);
 
     useEffect(() => {
+        var table;
+
         if (opener) {
-            chartMade.current = document.getElementById(`${position}_vs_${opener}`) == true;
+            table = document.getElementById(`${position}_vs_${opener}`);
         }
         else {
-            chartMade.current = document.getElementById(`${position}`) == true;
+            table = document.getElementById(position);
         }
-        //console.log(position, opener, chartMade.current, visible);
-    })
+        chartMade.current = table && table.childNodes > 0;
+    });
 
     const [gto, setGTO] = useState();
 

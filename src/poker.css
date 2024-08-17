@@ -28,7 +28,10 @@ body {
 }
 
 .pause-label p,
-.rng-label p {
+.rng-label p,
+.threebet-label p,
+.rfi-label p
+ {
   color: white;
   margin: auto;
   border-bottom: 1px dashed;
