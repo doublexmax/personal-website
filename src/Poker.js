@@ -371,7 +371,7 @@ export default function Poker() {
               console.log('Please complete the current simulation before starting a new one.');
             }
           }}
-          className="btn btn-primary"
+          className="btn btn-primary btn-run-simulation"
         >
           Simulate
         </button>
