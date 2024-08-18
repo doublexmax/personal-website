@@ -44,9 +44,7 @@ function Portfolio() {
                                 <p className="card-text">
                                     A web-based app to intake GTO pre-flop charts and run simulations based on them.
                                     <br></br>
-                                    Allow a user to train game theory optimal play without need for an account, with information all stored in cookies.
-                                    <br></br>
-                                    Note: currently only supports desktop mode. Mobile visual support coming soon.
+                                    Allow a user to train game theory optimal play with no subscription nor signup needed. All information is stored in the browser's local storage to allow changes to persist after refresh.
                                     </p>
                                 <a href="/gto-trainer" className="btn btn-danger">Try it yourself <i className="bi bi-arrow-right"></i></a>
                             </div>
