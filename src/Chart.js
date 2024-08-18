@@ -7,20 +7,6 @@ import { cards_to_num } from "./info";
 import './poker.css';
 
 export function Chart({position, visible, opener, three_better}) {
-    var chartMade = useRef(false);
-
-    useEffect(() => {
-        var table;
-
-        if (opener) {
-            table = document.getElementById(`${position}_vs_${opener}`);
-        }
-        else {
-            table = document.getElementById(position);
-        }
-        chartMade.current = table && table.childNodes > 0;
-    });
-
     const [gto, setGTO] = useState();
 
     // if (visible) {
@@ -68,16 +54,18 @@ export function Chart({position, visible, opener, three_better}) {
     }, [gto]);
 
     useEffect(() => {
-        if (!chartMade.current) {
+        var chartMade = false;
 
-            var table;
+        var table;
 
-            if (opener) {
-                table = document.getElementById(`${position}_vs_${opener}`);
-            }
-            else {
-                table = document.getElementById(position);
-            }
+        if (opener) {
+            table = document.getElementById(`${position}_vs_${opener}`);
+        }
+        else {
+            table = document.getElementById(position);
+        }
+        chartMade = table && table.childElementCount;
+        if (!chartMade) {
 
             if (table && gto) {
                 for (let row = 0; row < 13; row++) {
@@ -127,8 +115,6 @@ export function Chart({position, visible, opener, three_better}) {
                     }
                     table.appendChild(tr);
                 };
-
-                chartMade.current = true;
             }
         }
 

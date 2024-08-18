@@ -197,8 +197,6 @@ export default function Poker() {
     }
 
     setIsSimulating(true); // Mark simulation as in progress
-    console.log('rfi only', RFIOnly);
-    console.log('3b only', threeBetOnly);
     const runGenerator = await nineMaxGenerator(RFIOnly, threeBetOnly);
     await runGenerator().then((data) => simulateHand(data[3], data[2], data[1], data[0]));
 
