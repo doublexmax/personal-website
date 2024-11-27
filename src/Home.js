@@ -6,12 +6,9 @@ function Home() {
             <div className="row mb-1">
                 <div className="main col-6">
                     <h2><u>I'm Maxx.</u></h2>
-                    <p>Current Computer Science and Maths student at Northeastern University.</p>
-                    <p >Full Stack Developer at &nbsp;
-                        <a href="https://www.youtube.com/@CasinoQuest" target="_blank" rel="noreferrer">Casino Quest</a>
-                        &nbsp; / &nbsp;
-                        <a href="https://cegdealers.com/" target="_blank" rel="noreferrer">CEG Dealer School</a>
-                        .
+                    <p>Current Computer Science and Mathematics student at Northeastern University.</p>
+                    <p>Incoming Software Engineer at &nbsp;
+                        <a href="https://microsoft.com/" target="_blank" rel="noreferrer">Microsoft</a>
                     </p>
                     <div>
                         <a className="btn btn-portfolio" href="/portfolio">Portfolio <i className="bi bi-arrow-right"></i></a>
@@ -28,11 +25,12 @@ function Home() {
                 <div className="col-9 experience">
                     <h3 className="experience-header">My Experience</h3>
                     <p className="about-me">
-                        For the past 2 years, I've been working as a Full Stack Developer part-time during university and full-time over summers, with back-ends in Python (web.py, Flask) and MySQL, and front-ends in HTML/CSS/JS (though this site is written in React!).
+                        For 2 years, I worked as a Full Stack Developer part-time during university and full-time over summers, with back-ends in Python (web.py, Flask) and MySQL, and front-ends in HTML/CSS/JS (though this site is written in React!)
+                        at <a href="https://www.youtube.com/@CasinoQuest" class="link" target="_blank" rel="noreferrer">Casino Quest</a> / <a href="https://cegdealers.com/" class="link" target="_blank" rel="noreferrer">CEG Dealer School</a>.
                         <br className="spacer" />
                         Along with programming languages, I have experience in WordPress and Shopify CMS's, as well as their respective APIs.
                         <br className="spacer" />
-                        In academics, I focus on DSA, aiming to cover all areas web-development, software development, and machine learning. 
+                        In academics, I focus on DSA, aiming to cover all areas web-development, software development, as well as machine learning.
                     </p>
                 </div>
             </div>

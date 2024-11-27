@@ -16,6 +16,10 @@ body {
   height: 100%;
 }
 
+.link {
+  color: #456e5f !important;
+}
+
 .typewriter {
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.65vw;
