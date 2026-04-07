@@ -14,7 +14,7 @@ function Home() {
                 </div>
                 <div className="extra col-3">
                     <figure className="figure">
-                        <img src="1657750750531.jpg" className="me-image figure-img img-fluid"></img>
+                        <img src="1657750750531.jpg" className="me-image figure-img img-fluid" alt=""></img>
                         <figcaption className="figure-caption text-white text-left">Contact Me: <a href="mailto:maxxtandon@gmail.com">maxxtandon@gmail.com</a></figcaption>
                     </figure>
                 </div>

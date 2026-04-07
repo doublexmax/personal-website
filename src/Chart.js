@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 import { getPokerHand } from "./utils";
 
@@ -51,7 +51,7 @@ export function Chart({position, visible, opener, three_better}) {
                 )
                 .catch((error) => console.log(error, 'error'));
         }
-    }, [gto]);
+    }, [gto, opener, position]);
 
     useEffect(() => {
         var chartMade = false;
@@ -118,7 +118,7 @@ export function Chart({position, visible, opener, three_better}) {
             }
         }
 
-    }, [gto]);
+    }, [gto, opener, position]);
 
     return (
         <div className="Chart">
