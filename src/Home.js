@@ -23,12 +23,11 @@ function Home() {
                 <div className="col-9 experience">
                     <h3 className="experience-header">My Experience</h3>
                     <p className="about-me">
-                        For 2 years, I worked as a Full Stack Developer part-time during university and full-time over summers, with back-ends in Python (web.py, Flask) and MySQL, and front-ends in HTML/CSS/JS (though this site is written in React!)
-                        at <a href="https://www.youtube.com/@CasinoQuest" class="link" target="_blank" rel="noreferrer">Casino Quest</a> / <a href="https://cegdealers.com/" class="link" target="_blank" rel="noreferrer">CEG Dealer School</a>.
+                        I currently work on backend and platform engineering at Microsoft on Azure Core's OneDeploy team, building deployment safety systems, scaling health and change-correlation pipelines, and improving operability for service teams.
                         <br className="spacer" />
-                        Along with programming languages, I have experience in WordPress and Shopify CMS's, as well as their respective APIs.
+                        More recently, that work has expanded into internal agent tooling and MCP integrations that help teams ship more reliably at scale.
                         <br className="spacer" />
-                        In academics, I focus on DSA, aiming to cover all areas web-development, software development, as well as machine learning.
+                        Before Microsoft, I worked as a Full Stack Developer at <a href="https://www.youtube.com/@CasinoQuest" class="link" target="_blank" rel="noreferrer">Casino Quest</a> / <a href="https://cegdealers.com/" class="link" target="_blank" rel="noreferrer">CEG Dealer School</a>, building Python, Flask, MySQL, and JavaScript tools for training products and business operations.
                     </p>
                 </div>
             </div>
