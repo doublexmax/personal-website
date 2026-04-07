@@ -95,7 +95,7 @@ export async function nineMaxGenerator(rfi_only, three_bet_only) {
             }
         }
         else { // hero is RFI
-            if (hero_position == 'bb') {
+            if (hero_position === 'bb') {
                 hero_position = 'sb';
             }
             

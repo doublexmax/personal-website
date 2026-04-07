@@ -49,7 +49,7 @@ export default function Poker() {
         }
       }
     });
-  }, [selectedPosition]);
+  }, [selectedPosition, selected3BPosition]);
 
   useEffect(() => {
     nine_max_positions.forEach((position, idx) => {
@@ -146,6 +146,7 @@ export default function Poker() {
     setSimResponse(null);    
 
     setIsSimulating(false); // Mark simulation as completed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [simResponse])
 
   const handleRaiseChange = (event) => {
@@ -245,7 +246,7 @@ export default function Poker() {
       if (history.includes(nine_max_positions[i])) { // someone raised
         document.getElementsByClassName(`chips ${nine_max_positions[i]}`)[0].innerText = "OPEN";
       }
-      else if (i == hero_idx) {
+      else if (i === hero_idx) {
         document.getElementsByClassName(`chips ${position}`)[0].innerText = "RAISE";
         break;
       } else {

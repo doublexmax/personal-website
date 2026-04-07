@@ -2,7 +2,7 @@ function Navbar() {
     return ( 
         <nav className="navbar">
             <a href="/" className="link-container">
-                <img src="MT.png" className="personal-logo mr-4"></img>
+                <img src="MT.png" className="personal-logo mr-4" alt=""></img>
                 <p className="typewriter"></p>
             </a>
             <div className="links">

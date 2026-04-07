@@ -19,7 +19,7 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, 
     return (
         <div className="PokerNavbar">
             <nav className="navbar sticky-top poker-nav ">
-            <a className="navbar-brand home-btn" href="/"><img src="MT.png" className="home-btn-img"></img></a>
+            <a className="navbar-brand home-btn" href="/"><img src="MT.png" className="home-btn-img" alt=""></img></a>
             <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="pause-check" checked={pause} onChange={() => setPause(pause ^ 1)} />
                 <label className="form-check-label pause-label" htmlFor="pause-check">
@@ -30,7 +30,7 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, 
                 <input className="form-check-input" type="checkbox" value="" id="rfi-check" checked={RFIOnly} onChange={
                     () => {
                             setRFIOnly(RFIOnly ^ 1);
-                            if (RFIOnly == 0 && threeBetOnly == 1) {
+                            if (RFIOnly === 0 && threeBetOnly === 1) {
                                 setThreeBetOnly(false);
                             }
                         }
@@ -44,7 +44,7 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, 
                 <input className="form-check-input" type="checkbox" value="" id="threebet-check" checked={threeBetOnly}  onChange={
                     () => {
                             setThreeBetOnly(threeBetOnly ^ 1);
-                            if (threeBetOnly == 0 && RFIOnly == 1) {
+                            if (threeBetOnly === 0 && RFIOnly === 1) {
                                 setRFIOnly(false);
                             }
                         }
@@ -63,7 +63,7 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, 
             <div id="navbarNav">
                 <ul className="navbar-nav">
                 <li className="nav-item active">
-                    <a className="nav-link" href="#"><button onClick={() => togglePopup()} className="charts-btn btn"> Manage Charts <i className="bi bi-gear"></i></button></a>
+                    <button onClick={() => togglePopup()} className="nav-link charts-btn btn"> Manage Charts <i className="bi bi-gear"></i></button>
                 </li>
                 </ul>
             </div>

@@ -11,7 +11,7 @@ function Portfolio() {
                 <div className="row first-row mb-4">
                     <div className="col-md">
                         <div className="card bg-dark h-100">
-                            <img className="card-img-top" src="dealer_school_banner.png" alt="Card image cap" />
+                            <img className="card-img-top" src="dealer_school_banner.png" alt="Dealer School banner" />
                             <div className="card-body">
                                 <h5 className="card-title">dealers.school</h5>
                                 <p className="card-text">
@@ -26,7 +26,7 @@ function Portfolio() {
                     </div>
                     <div className="col-md">
                         <div className="card bg-dark h-100">
-                            <img className="card-img-top" src="fischer_random_banner.png" alt="Card image cap" />
+                            <img className="card-img-top" src="fischer_random_banner.png" alt="Fischer Random Chess banner" />
                             <div className="card-body">
                                 <h5 className="card-title">A Fischer Random Chess Engine</h5>
                                 <p className="card-text">Multiple machine learning models built to evaluate and play Fischer Random Chess: a variant with randomized starting positions.</p>
@@ -38,7 +38,7 @@ function Portfolio() {
                 <div className="row second-row mb-4">
                     <div className="col-md">
                         <div className="card bg-dark h-100">
-                            <img className="card-img-top" src="gto_trainer.png" alt="Card image cap" />
+                            <img className="card-img-top" src="gto_trainer.png" alt="GTO Poker Trainer banner" />
                             <div className="card-body">
                                 <h5 className="card-title">Game Theory Optimal Poker Trainer</h5>
                                 <p className="card-text">
