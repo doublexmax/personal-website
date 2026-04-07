@@ -6,10 +6,8 @@ function Home() {
             <div className="row mb-1">
                 <div className="main col-6">
                     <h2><u>I'm Maxx.</u></h2>
-                    <p>Current Computer Science and Mathematics student at Northeastern University.</p>
-                    <p>Incoming Software Engineer at &nbsp;
-                        <a href="https://microsoft.com/" target="_blank" rel="noreferrer">Microsoft</a>
-                    </p>
+                    <p>Software Engineer @ Microsoft inside of Azure Core's OneDeploy team.</p>
+                    <p>Computer Science and Mathematics Alum from Northeastern University.</p>
                     <div>
                         <a className="btn btn-portfolio" href="/portfolio">Portfolio <i className="bi bi-arrow-right"></i></a>
                     </div>
