@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Prerequisites
+
+Use Node.js 24.x, matching the runtime pinned in `package.json` for Vercel builds.
+
 ## Available Scripts
 
 In the project directory, you can run:
