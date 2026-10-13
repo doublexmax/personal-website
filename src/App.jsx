@@ -5,10 +5,10 @@ import { SpeedInsights } from "@vercel/speed-insights/react"
 import { Analytics } from "@vercel/analytics/react"
 
 
-import Navbar from './Navbar';
-import Home from './Home';
-import Portfolio from './Portfolio';
-import Poker from './Poker';
+import Navbar from './Navbar.jsx';
+import Home from './Home.jsx';
+import Portfolio from './Portfolio.jsx';
+import Poker from './Poker.jsx';
 
 
 function App() {

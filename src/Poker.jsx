@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { PokerNavbar } from './PokerNavbar';
-import { Chart } from './Chart';
+import { PokerNavbar } from './PokerNavbar.jsx';
+import { Chart } from './Chart.jsx';
 
 import { nineMaxGenerator } from './generator';
 
@@ -380,4 +380,3 @@ export default function Poker() {
     </div>
   );
 }
-
