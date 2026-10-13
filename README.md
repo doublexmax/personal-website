@@ -1,74 +1,80 @@
-# Getting Started with Create React App
+# Maxx Tandon's personal website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A client-side React website with a homepage, portfolio, and GTO poker trainer.
+Vite builds the existing JavaScript, JSX, and CSS into static files for Vercel.
 
 ## Prerequisites
 
-Use Node.js 24.x, matching the runtime pinned in `package.json` for Vercel builds.
+Use a current Node.js 24.x release, at least 24.15.0, and npm.
+`package.json` pins the Node major version for Vercel.
 
-## Available Scripts
+## Run locally
 
-In the project directory, you can run:
+Install the locked dependencies and start the development server:
 
-### `npm start`
+```sh
+npm ci
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open the local URL printed by Vite, normally `http://localhost:5173`.
+On Windows, use `npm.cmd` if PowerShell blocks the `npm.ps1` entry point.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Check the app
 
-### `npm test`
+Run the lint checks, characterization tests, and production build:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+npm run lint
+npm test -- --run
+npm run build
+```
 
-### `npm run build`
+`npm test` starts Vitest in watch mode.
+The tests cover the existing routes, link destinations, initial chart display, and hand conversions.
+ESLint reports existing application warnings separately from errors.
+The build command does not run lint or tests implicitly.
+Vite's default modern browser target replaces the CRA Browserslist configuration.
+Recorded visual checks cover Edge at desktop and mobile widths, not every browser from the former policy.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To inspect the production artifact:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+npm run preview
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The preview normally runs at `http://localhost:4173`.
+Generated files go to `dist`, which is not committed.
 
-### `npm run eject`
+## Deploy to Vercel
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`vercel.json` selects Vite, runs `npm run build`, and serves `dist`.
+Its SPA rewrite supports direct visits and refreshes at `/portfolio` and `/gto-trainer`.
+Existing documents, images, `charts.json`, and other files in `public` keep their public URLs.
+Bootstrap CSS and Bootstrap Icons retain their existing CDN versions.
+Vercel Analytics and Speed Insights remain mounted in the app.
+React and React Router retain their pre-migration versions.
+Speed Insights uses 1.3.1 for compatibility with the new dependency graph.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If the Vercel project has explicit dashboard overrides, align them with the repository configuration:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+| Setting | Value |
+| --- | --- |
+| Framework preset | Vite |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Node.js version | 24.x |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Verify an authorized preview deployment before publishing production.
+Local preview does not verify the live Vercel project's settings.
 
-## Learn More
+## Source and refactoring scope
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+`index.html` loads `src\index.jsx`, which mounts `src\App.jsx`.
+Components containing JSX use `.jsx`. Other JavaScript modules use `.js`.
+Public documents and images remain in `public`.
+Poker ranges are still stored locally in the browser under the existing keys.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The [refactoring plan](docs/refactor-plan.md) records the baseline and work blocks.
+The [architecture specification](docs/architecture-spec.md) defines the eventual file and state ownership.
+The build migration does not fix the recorded trainer defects or perform the later file-organization and trainer refactors.
