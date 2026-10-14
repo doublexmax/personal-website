@@ -1,49 +1,38 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense, useLayoutEffect } from 'react';
+import { Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import SiteLayout from './components/SiteLayout.jsx';
+import HomePage from './pages/HomePage.jsx';
+import PortfolioPage from './pages/PortfolioPage.jsx';
 
-// Vercel insights
-import { SpeedInsights } from "@vercel/speed-insights/react"
-import { Analytics } from "@vercel/analytics/react"
+const PokerTrainerPage = lazy(() => import('./features/poker/PokerTrainerPage.jsx'));
 
+export default function App() {
+  const { pathname } = useLocation();
+  const navigationType = useNavigationType();
 
-import Navbar from './Navbar.jsx';
-import Home from './Home.jsx';
-import Portfolio from './Portfolio.jsx';
-import Poker from './Poker.jsx';
+  useLayoutEffect(() => {
+    if (navigationType !== 'POP') {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, navigationType]);
 
-
-function App() {
   return (
-    <Router>
+    <>
       <Routes>
-        <Route exact path="/" element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route exact path="/portfolio" element={
-            <Layout>
-              <Portfolio />
-            </Layout>
-          }
-        />
-        <Route exact path="/gto-trainer" element={<Poker />} />
+        <Route element={<SiteLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+        </Route>
+        <Route path="/gto-trainer" element={
+          <Suspense fallback={<p role="status">Loading trainer...</p>}>
+            <PokerTrainerPage />
+          </Suspense>
+        } />
       </Routes>
       <Analytics />
       <SpeedInsights />
-    </Router>
+    </>
   );
 }
-
-function Layout({ children }) {
-  return (
-    <div className="App">
-      <Navbar />
-      <div className="content">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-export default App;

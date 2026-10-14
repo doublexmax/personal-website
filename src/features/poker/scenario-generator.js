@@ -1,4 +1,4 @@
-import { num_to_cards, all_cards, cards_to_num, nine_max_positions } from './info';
+import { num_to_cards, all_cards, cards_to_num, nine_max_positions } from './poker-data.js';
 
 async function get_chart(position) {
     return fetch('/charts.json').then(response => response.json()).then(data => {

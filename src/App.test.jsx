@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen, waitFor, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import App from './App.jsx';
-import charts from './charts.json';
+import charts from './features/poker/default-ranges.json';
 
 vi.mock('@vercel/analytics/react', () => ({
   Analytics: () => null,
@@ -29,17 +30,18 @@ afterEach(() => {
 
 test('the homepage retains its introduction, portfolio destination, and resume link', () => {
   window.history.replaceState({}, '', '/');
-  render(<App />);
+  render(<App />, { wrapper: BrowserRouter });
 
   expect(screen.getByRole('heading', { name: "I'm Maxx." })).toBeInTheDocument();
   expect(screen.getByText(/Software Engineer @ Microsoft/)).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Portfolio' })).toHaveAttribute('href', '/portfolio');
-  expect(screen.getByRole('link', { name: 'Resume' })).toHaveAttribute('href', 'Maxx_Tandon_Resume.pdf');
+  expect(screen.getByRole('link', { name: 'Resume' })).toHaveAttribute('href', '/Maxx_Tandon_Resume.pdf');
+  expect(document.querySelector('.me-image')).toHaveAttribute('src', '/images/portrait-maxx.jpg');
 });
 
 test('the portfolio retains its project destinations', () => {
   window.history.replaceState({}, '', '/portfolio');
-  render(<App />);
+  render(<App />, { wrapper: BrowserRouter });
 
   expect(screen.getByRole('heading', { name: 'A Collection of My Projects' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Check it out' })).toHaveAttribute('href', 'https://dealers.school/');
@@ -48,13 +50,19 @@ test('the portfolio retains its project destinations', () => {
     'https://github.com/willredding314/FischerRandom'
   );
   expect(screen.getByRole('link', { name: 'Try it yourself' })).toHaveAttribute('href', '/gto-trainer');
+  expect(screen.getAllByRole('img').map((image) => image.getAttribute('src'))).toEqual([
+    '/images/logo.png',
+    '/images/dealer-school-banner.png',
+    '/images/fischer-random-banner.png',
+    '/images/gto-trainer-banner.png',
+  ]);
 });
 
 test('the trainer retains its controls, initial counters, and selected chart', async () => {
   window.history.replaceState({}, '', '/gto-trainer');
-  render(<App />);
+  render(<App />, { wrapper: BrowserRouter });
 
-  expect(screen.getByRole('button', { name: 'Simulate' })).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: 'Simulate' })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Manage Charts/ })).toBeInTheDocument();
   expect(screen.getByLabelText('Slow Mode')).toBeChecked();
   expect(screen.getByLabelText('RFI Only')).not.toBeChecked();
@@ -72,4 +80,17 @@ test('the trainer retains its controls, initial counters, and selected chart', a
   expect(cells[1]).toHaveTextContent('AKs');
   expect(cells[13]).toHaveTextContent('AKo');
   expect(cells[168]).toHaveTextContent('22');
+});
+
+test('internal navigation renders the portfolio through the existing router', () => {
+  window.history.replaceState({}, '', '/');
+  const scroll = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  render(<App />, { wrapper: BrowserRouter });
+
+  fireEvent.click(screen.getByRole('link', { name: 'Portfolio' }));
+
+  expect(screen.getByRole('heading', { name: 'A Collection of My Projects' })).toBeInTheDocument();
+  expect(window.location.pathname).toBe('/portfolio');
+  expect(scroll).toHaveBeenCalledWith(0, 0);
+  scroll.mockRestore();
 });

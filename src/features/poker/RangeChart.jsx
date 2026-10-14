@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { getPokerHand } from "./utils";
+import { getPokerHand } from "./poker-utils.js";
 
-import { cards_to_num } from "./info";
+import { cards_to_num } from "./poker-data.js";
 
 import './poker.css';
 
-export function Chart({position, visible, opener, three_better}) {
+export function RangeChart({position, visible, opener, three_better}) {
     const [gto, setGTO] = useState();
 
     // if (visible) {
@@ -121,8 +121,8 @@ export function Chart({position, visible, opener, three_better}) {
     }, [gto, opener, position]);
 
     return (
-        <div className="Chart">
-            {(opener && <table id={`${position}_vs_${opener}`} style={{display:visible ? '' : 'none'}}></table>) ||  <table id={position} style={{display:visible ? '' : 'none'}}></table>}
+        <div className="range-chart">
+            {(opener && <table className="poker-range-grid" id={`${position}_vs_${opener}`} style={{display:visible ? '' : 'none'}}></table>) ||  <table className="poker-range-grid" id={position} style={{display:visible ? '' : 'none'}}></table>}
         </div>
     )
 }

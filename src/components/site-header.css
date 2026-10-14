@@ -1,0 +1,94 @@
+:where(.site-header) .typewriter {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.65vw;
+  overflow: hidden;
+  padding-right: 10px;
+  border-right: 0.15em solid rgb(184, 181, 181);
+  border-radius:1.2px;
+  margin-top: 4px;
+  white-space: nowrap;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  width: fit-content;
+  animation:
+    0.9s steps(14) site-typing-next 3.2s,
+    1.2s steps(9) site-erase 2s,
+    0.8s steps(8) site-typing,
+    site-cursor 1.1s step-end infinite;
+
+}
+
+:where(.site-header) .typewriter::before {
+  content: "$ whoami";
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-delay: 3.2s;
+  animation-name: site-name;
+}
+
+:where(.site-header) .link-container {
+  display: flex;
+  color: white;
+}
+
+@keyframes site-cursor {
+  from, to { border-color: transparent }
+  50% { border-color: rgb(184, 181, 181); }
+}
+
+
+
+@keyframes site-typing {
+  from { width: 0ch }
+  to { width: 6ch }
+}
+
+@keyframes site-erase {
+  from {
+      width: 6ch;
+  }
+  to {
+      width: 0ch;
+  }
+}
+
+@keyframes site-typing-next {
+  from {
+    width: 0;
+  }
+  to {
+    width: 9ch;
+  }
+}
+
+@keyframes site-name {
+  from {
+    content: "$ whoami";
+  }
+  to {
+    content: "> Maxx Tandon";
+  }
+}
+
+:where(.site-header) .personal-logo {
+  height:3rem;
+  margin:auto;
+  box-shadow: 0 0 20px 4px rgb(209 56 56 / 70%);
+}
+.site-header .links {
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .site-header .links {
+    margin-left: 15%;
+  }
+
+}
+
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .site-header .links {
+    margin: auto;
+  }
+}

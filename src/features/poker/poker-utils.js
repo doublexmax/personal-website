@@ -1,4 +1,4 @@
-import { cards } from "./info";
+import { cards } from "./poker-data.js";
 
 export function getPokerHand(row, col) {
     if (row === col) {

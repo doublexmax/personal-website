@@ -1,6 +1,6 @@
 # Simplify the website in three work blocks
 
-Status is locally verified through Block 1. Live Vercel verification is pending. Blocks 2 and 3 have not started.
+Block 1 is merged into master. Block 2 is implemented and locally verified, awaiting review. Block 3 has not started.
 
 Keep the existing website and poker trainer. Change how the code is built, organized, and maintained.
 Preserve content, routes, public document links, and saved poker ranges.
@@ -102,6 +102,33 @@ The local Vite preview does not substitute for that hosting check.
 Vite's default modern browser target replaces the CRA Browserslist configuration.
 The recorded parity checks cover Edge at desktop and mobile widths. Broader browser compatibility is not claimed.
 
+### Vercel preview attempt
+
+The operator authorized a preview deployment through the existing GitHub integration.
+Commit `7c70e97e626609baf27bf0f5b2e090434f084c96` was pushed to `doublexmax-website-architecture`.
+Vercel reports Preview deployment `7050709446` as successful.
+The [preview deployment](https://personal-website-n2j1ax5ja-doublexmaxs-projects.vercel.app) is available to authorized Vercel users.
+
+Unauthenticated requests to the homepage, portfolio, trainer, and public assets redirect to Vercel authentication.
+The browser also reaches the Vercel sign-in page rather than the application.
+The live route and asset checks remain unchecked. Authentication redirects do not prove those routes work.
+The production branch remains at `93a52814c774b0fd91a8beff109fc784f317fab7`.
+No production deployment, merge, or protection-setting change was performed.
+Deployment and HTTP receipts remain in `<session artifacts>\vercel-deploy`.
+
+### Block 1 merge
+
+The operator authorized merging the build migration before continuing.
+An independent verifier posted `PASS+NOTES` for the exact head and patch.
+Fresh tests, lint, source comparisons, and both production artifacts passed.
+All eight primary images matched the immutable baseline.
+The notes retain the disclosed browser coverage and hosted-authentication limits.
+
+The build migration merged into master at `4f75a517292c0a6c86ba23c94e81efadfb94b6bc`.
+Vercel reports Production deployment `7051859071` as successful.
+No hosted application verification is inferred from the deployment status.
+The independent receipts are in `<session artifacts>\shipping-block1`.
+
 **Review boundary.** Stop with the dependency diff, route results, and any intentional differences. Start Block 2 only after review.
 
 ## Block 2. Give files, shared markup, and styles clear ownership
@@ -112,26 +139,59 @@ The recorded parity checks cover Edge at desktop and mobile widths. Broader brow
 
 **Work.**
 
-- [ ] Move route components to `src\pages` and the trainer to `src\features\poker`. Apply the source mapping in the specification.
-- [ ] Extract the website header and layout as shared components. Keep the trainer's distinct layout.
-- [ ] Replace repeated portfolio-card markup with one `ProjectCard` and a small `projects.js` record list. Preserve project order, descriptions, destinations, and button labels.
-- [ ] Leave one-off homepage prose in the page. Do not build a generic content system.
-- [ ] Import global CSS once from the entry point. Put page and component rules beside their owners.
-- [ ] Scope trainer styles and rename collision-prone selectors. Update JSX and any remaining DOM selectors together.
-- [ ] Remove conflicting page-level `body` overrides after scoping the styles. Document any visual difference required to correct route leakage.
-- [ ] Rename opaque source assets and load them through imports. Preserve existing public asset URLs without duplicate binary copies.
-- [ ] Keep `Maxx_Tandon_Resume.pdf`, the favicon, and the manifest at their existing public URLs. Internal organization does not justify breaking public links.
-- [ ] Lazy-load the trainer after its styles are isolated. Keep lazy-loading feedback minimal and ensure navigation still works.
-- [ ] Update imports and documentation in the same block. Delete obsolete files after all callers move.
+- [x] Move route components to `src\pages` and the trainer to `src\features\poker`. Apply the source mapping in the specification.
+- [x] Extract the website header and layout as shared components. Keep the trainer's distinct layout.
+- [x] Replace repeated portfolio-card markup with one `ProjectCard` and a small `projects.js` record list. Preserve project order, descriptions, destinations, and button labels.
+- [x] Leave one-off homepage prose in the page. Do not build a generic content system.
+- [x] Import global CSS once from the entry point. Put page and component rules beside their owners.
+- [x] Scope trainer styles and rename collision-prone selectors. Update JSX and any remaining DOM selectors together.
+- [x] Remove conflicting page-level `body` overrides after scoping the styles. Document any visual difference required to correct route leakage.
+- [x] Rename opaque source assets and load them through imports. Preserve existing public asset URLs without duplicate binary copies.
+- [x] Keep `Maxx_Tandon_Resume.pdf`, the favicon, and the manifest at their existing public URLs. Internal organization does not justify breaking public links.
+- [x] Lazy-load the trainer after its styles are isolated. Keep lazy-loading feedback minimal and ensure navigation still works.
+- [x] Update imports and documentation in the same block. Delete obsolete files after all callers move.
 
 **Evidence needed to finish.**
 
-- [ ] Run lint, the characterization checks, and the production build.
-- [ ] Compare the homepage, portfolio, trainer, and editor at the recorded desktop and mobile viewports.
-- [ ] Navigate between all routes without a reload, then repeat with direct visits and refreshes. Confirm that trainer styles do not change the website layout.
-- [ ] Check every project link, header link, and public asset URL captured in the baseline.
-- [ ] Confirm that the initial homepage does not eagerly load trainer code or chart data.
-- [ ] Inspect the resulting tree and imports. Each new shared component must have actual consumers, not a hypothetical future use.
+- [x] Run lint, the characterization checks, and the production build.
+- [x] Compare the homepage, portfolio, trainer, and editor at the recorded desktop and mobile viewports.
+- [x] Navigate between all routes without a reload, then repeat with direct visits and refreshes. Confirm that trainer styles do not change the website layout.
+- [x] Check every project link, header link, and public asset URL captured in the baseline.
+- [x] Confirm that the initial homepage does not eagerly load trainer code or chart data.
+- [x] Inspect the resulting tree and imports. Each new shared component must have actual consumers, not a hypothetical future use.
+
+### Block 2 local evidence
+
+`src\main.jsx` mounts the browser router and imports global CSS once.
+`SiteLayout` owns shared website chrome through the router outlet.
+`ProjectCard` renders the existing project records, while the portfolio page retains its original two-row layout.
+Internal links now use the existing router without reloading the document.
+New route pushes reset scroll to the top. History navigation does not force a scroll reset.
+
+Page and trainer styles are scoped to their owners.
+The `:where` roots preserve the old selector specificity and Bootstrap precedence.
+Shared navigation geometry has both website and trainer consumers.
+The existing green background is one invariant global default, not an effect of importing trainer CSS.
+Normal body layout replaced the conflicting body overrides without a visual difference.
+
+Images live once under `public\images` with descriptive filenames.
+Consumers import the small `src\data\images.js` URL catalog.
+This replaces the illustrative `src\assets` proposal because public binary imports worked in the production build but were denied by the SSR test loader.
+The chosen shape avoids test-only loader exceptions, custom hashing machinery, and duplicate binaries.
+Legacy redirects live in `vercel.json`. Vite reads those same entries for development and preview compatibility.
+
+All 15 tests and the production build pass.
+Lint has no errors and retains only the two existing chart warnings.
+All eight primary desktop/mobile images are pixel-identical to the original baseline.
+The homepage also remains pixel-identical after loading trainer CSS and returning through SPA navigation.
+The five legacy image URLs redirect to unchanged binary content, including query preservation.
+The initial homepage makes no trainer-module, trainer-CSS, or chart requests.
+The trainer resources load when its route is visited.
+
+The poker rule/helper bodies and chart representations remain unchanged.
+Existing trainer defects remain deferred to the separately agreed Block 3 contract.
+No Block 2 merge or production deployment has been authorized by this implementation step.
+Receipts, the CSS migration tool, and the network/alias verification are in `<session artifacts>\block-2`.
 
 **Review boundary.** Stop with the final file map and screenshot comparisons. Start Block 3 only after review.
 

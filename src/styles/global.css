@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+html {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  font-family: "Nunito Sans";
+  color: #F4F7F5;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle, #008000, #004d00, #001a00, #000000);
+  overflow-x: hidden;
+  height: 100%;
+}
+
+@keyframes site-fade-in {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+a {
+  color: #8ee5c3;
+}
+
+.btn {
+  transform: scale(1);
+  transition:0.2s ease-out;
+  color: white;
+}
+
+.btn:hover {
+  transition-property: transform, background-color;
+  transition-duration:0.2s;
+  transform: scale(1.1);
+  color: cornsilk;
+  background-color: crimson;
+}
+
+.bi-arrow-right::before {
+  color: black;
+  width: 1em;
+  display: inline-block;
+  padding: 1px;
+  font-size: large;
+}
+
+.nav-shell {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  max-width: 70%;
+  margin: 0 auto;
+  border-bottom: 1px solid #f2f2f2;
+  flex-wrap: unset;
+}
+.nav-shell a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+a:hover {
+  color: #f1356d;
+}
+
+@media (max-width: 768px) {
+
+  .nav-shell a {
+    margin: auto;
+  }
+
+  .btn-danger {
+    font-size: small;
+  }
+
+}
+
+
+@media (min-width: 576px) and (max-width: 768px) {
+
+  .nav-shell {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-shell {
+    flex-wrap: wrap;
+  }
+}
