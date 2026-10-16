@@ -1,77 +1,47 @@
 import { Link } from 'react-router-dom';
 import { images } from '../../data/images.js';
 
-export function TrainerControls({pause, setPause, invertRNG, setInvertRNG, RFIOnly, setRFIOnly, threeBetOnly, setThreeBetOnly}) {
-    function togglePopup() {
-        if (document.getElementById("popupBackground").style.display === "flex") {
-            hidePopup();
-        }
-        else {
-            showPopup();
-        }
-    }
-
-    function hidePopup() {
-        document.getElementById("popupBackground").style.display = "none";
-    };
-
-    function showPopup() {
-        document.getElementById("popupBackground").style.display = "flex";
-    };
-
-    return (
-        <div className="trainer-controls">
-            <nav className="navbar nav-shell sticky-top poker-nav">
-            <Link className="navbar-brand home-btn" to="/"><img src={images.logo} className="home-btn-img" alt=""></img></Link>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="pause-check" checked={pause} onChange={() => setPause(pause ^ 1)} />
-                <label className="form-check-label pause-label" htmlFor="pause-check">
-                    <p data-bs-toggle="tooltip" title="Fold through until hero's action with pauses.">Slow Mode</p>
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="rfi-check" checked={RFIOnly} onChange={
-                    () => {
-                            setRFIOnly(RFIOnly ^ 1);
-                            if (RFIOnly === 0 && threeBetOnly === 1) {
-                                setThreeBetOnly(false);
-                            }
-                        }
-                    } 
-                />
-                <label className="form-check-label rfi-label" htmlFor="rfi-check">
-                    <p data-bs-toggle="tooltip" title="Generate only raise-first-in spots.">RFI Only</p>
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="threebet-check" checked={threeBetOnly}  onChange={
-                    () => {
-                            setThreeBetOnly(threeBetOnly ^ 1);
-                            if (threeBetOnly === 0 && RFIOnly === 1) {
-                                setRFIOnly(false);
-                            }
-                        }
-                    }
-                />
-                <label className="form-check-label threebet-label" htmlFor="threebet-check">
-                    <p data-bs-toggle="tooltip" title="Generate only three-bet spots.">3B Only</p>
-                </label>
-            </div>
-            <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="rng-check" checked={invertRNG} onChange={() => setInvertRNG(invertRNG ^ 1)} />
-                <label className="form-check-label rng-label" htmlFor="rng-check">
-                    <p data-bs-toggle="tooltip" title="Instead of using low RNG numbers for low frequency actions, use high RNG numbers instead.">Invert RNG</p>
-                </label>
-            </div>
-            <div id="navbarNav">
-                <ul className="navbar-nav">
-                <li className="nav-item active">
-                    <button onClick={() => togglePopup()} className="nav-link charts-btn btn"> Manage Charts <i className="bi bi-gear"></i></button>
-                </li>
-                </ul>
-            </div>
-
-            </nav>
+export function TrainerControls({ options, onChange, onManageCharts }) {
+  return (
+    <div className="trainer-controls">
+      <nav className="navbar nav-shell sticky-top poker-nav">
+        <Link className="navbar-brand home-btn" to="/"><img src={images.logo} className="home-btn-img" alt="" /></Link>
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" id="pause-check" checked={options.slow}
+            onChange={event => onChange({ ...options, slow: event.target.checked })} />
+          <label className="form-check-label pause-label" htmlFor="pause-check">
+            <p title="Fold through until hero's action with pauses.">Slow Mode</p>
+          </label>
         </div>
-    )
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" id="rfi-check" checked={options.mode === 'rfi'}
+            onChange={event => onChange({ ...options, mode: event.target.checked ? 'rfi' : 'all' })} />
+          <label className="form-check-label rfi-label" htmlFor="rfi-check">
+            <p title="Generate only raise-first-in spots.">RFI Only</p>
+          </label>
+        </div>
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" id="threebet-check" checked={options.mode === 'three-bet'}
+            onChange={event => onChange({ ...options, mode: event.target.checked ? 'three-bet' : 'all' })} />
+          <label className="form-check-label threebet-label" htmlFor="threebet-check">
+            <p title="Generate only three-bet spots.">3B Only</p>
+          </label>
+        </div>
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox" id="rng-check" checked={options.inverted}
+            onChange={event => onChange({ ...options, inverted: event.target.checked })} />
+          <label className="form-check-label rng-label" htmlFor="rng-check">
+            <p title="Use low RNG numbers for raises instead of high RNG numbers.">Invert RNG</p>
+          </label>
+        </div>
+        <div id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item active">
+              <button onClick={onManageCharts} className="nav-link charts-btn btn"> Manage Charts <i className="bi bi-gear"></i></button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
 # Simplify the website in three work blocks
 
-Block 1 is merged into master. Block 2 is implemented and locally verified, awaiting review. Block 3 has not started.
+Blocks 1 and 2 are merged into master. Block 3 is implemented and locally verified, awaiting review.
 
 Keep the existing website and poker trainer. Change how the code is built, organized, and maintained.
 Preserve content, routes, public document links, and saved poker ranges.
@@ -204,34 +204,106 @@ Receipts, the CSS migration tool, and the network/alias verification are in `<se
 Treat this as one cohesive change because chart initialization, generation, editing, and persistence currently depend on each other.
 Do not release a half-migrated trainer with separate old and new state owners.
 
+### Approved behavior contract
+
+The operator approved the confirmed corrections when starting Block 3.
+Keep verification focused on existing tools, boundary regression cases, and real browser checks.
+Do not add a test framework or turn this into a broader poker feature project.
+
+Use half-open probability intervals for integer RNG values zero through 99.
+Normal evaluation orders fold, call, then raise. Inverted evaluation orders raise, call, then fold.
+Retain suited-hand suffixes, mutually exclusive training modes, and visible cards on repeated hands.
+The first actual opening raise determines the supported facing-open scenario.
+Do not generate limps, multiway action, four-bets, or additional formats.
+Retain uniform hand-class sampling and the existing RFI big-blind-to-small-blind convention.
+Three-bet-only selection conditions on a possible first open instead of recursively retrying forever.
+If the configured ranges cannot produce that scenario, show an error.
+Prevent simulations from depending on hidden chart initialization and cancel pending animation on unmount.
+Do not reset malformed stored ranges or claim a failed save succeeded.
+
+### Execution sequence
+
+1. Verify the data boundary and pure rules against literal inputs and the unchanged dataset.
+2. Move editor, controls, table, and lifecycle to React state in one coherent caller migration.
+3. Exercise the production artifact, compare unchanged screens, and document each approved behavior difference.
+
+The done predicate requires one default source, no trainer DOM mutations, preserved storage keys,
+correct approved cases, working complete browser rounds, and explicit failure feedback.
+The scope is the existing poker feature, its public chart compatibility endpoint, and directly related checks/docs.
+There are no delegates for implementation. Throughput comes from bounded modules and a reusable browser probe.
+
 **Work.**
 
-- [ ] Keep one default chart dataset. Verify equivalence before removing the duplicate file or changing its public serving path.
-- [ ] Move hand conversions and position conventions into named poker modules. Keep the existing chart keys and stored representation.
-- [ ] Centralize chart loading, storage parsing, and writes at one boundary. Load effective ranges before enabling generation.
-- [ ] Let the trainer own the effective ranges. Pass the selected range and an edit callback to the editor.
-- [ ] Make an edit update both the visible chart and the data used by the next simulation. Preserve the edit after refresh.
-- [ ] Separate scenario generation and answer evaluation from React, the DOM, and storage. Supply ranges and random input directly.
-- [ ] Replace positional scenario arrays with named records. Replace mutually exclusive mode flags with one mode value.
-- [ ] Express the training lifecycle with explicit phases. Derive control visibility and availability from that phase.
-- [ ] Render chart cells, card displays, seats, feedback, and counters through React. Remove competing DOM creation and style mutations.
-- [ ] Keep chart selection and percentage sliders local to the editor. Render only the selected chart.
-- [ ] Preserve the existing controls, supported scenarios, animation intent, and chart color meaning.
-- [ ] Cancel pending animation work when leaving the trainer. Prevent stale work from updating a later training round.
-- [ ] Surface malformed storage and unavailable persistence explicitly. Do not silently reset saved ranges or report an unsuccessful save as successful.
-- [ ] Remove obsolete effects, unused parameters, dead branches, and the old generator wrapper after every caller migrates.
-- [ ] Add focused tests for hand mapping, scenario records, evaluation boundaries, persistence, and lifecycle transitions.
+- [x] Keep one default chart dataset. Verify equivalence before removing the duplicate file or changing its public serving path.
+- [x] Move hand conversions and position conventions into named poker modules. Keep the existing chart keys and stored representation.
+- [x] Centralize chart loading, storage parsing, and writes at one boundary. Load effective ranges before enabling generation.
+- [x] Let the trainer own the effective ranges. Pass the selected range and an edit callback to the editor.
+- [x] Make an edit update both the visible chart and the data used by the next simulation. Preserve the edit after refresh.
+- [x] Separate scenario generation and answer evaluation from React, the DOM, and storage. Supply ranges and random input directly.
+- [x] Replace positional scenario arrays with named records. Replace mutually exclusive mode flags with one mode value.
+- [x] Express the training lifecycle with explicit phases. Derive control visibility and availability from that phase.
+- [x] Render chart cells, card displays, seats, feedback, and counters through React. Remove competing DOM creation and style mutations.
+- [x] Keep chart selection and percentage sliders local to the editor. Render only the selected chart.
+- [x] Preserve the existing controls, supported scenarios, animation intent, and chart color meaning.
+- [x] Cancel pending animation work when leaving the trainer. Prevent stale work from updating a later training round.
+- [x] Surface malformed storage and unavailable persistence explicitly. Do not silently reset saved ranges or report an unsuccessful save as successful.
+- [x] Remove obsolete effects, unused parameters, dead branches, and the old generator wrapper after every caller migrates.
+- [x] Add focused tests for hand mapping, scenario records, evaluation boundaries, persistence, and lifecycle transitions.
 
 **Evidence needed to finish.**
 
-- [ ] Run deterministic fixtures through the old and new rule implementations. Compare results for unchanged behavior.
-- [ ] Assert every agreed behavior correction separately. Link the reproduction and approval rather than hiding the difference in updated snapshots.
-- [ ] Use a fresh browser context. Confirm that the first simulation works without opening the editor or waiting for hidden charts.
-- [ ] Edit a range, run a round, refresh, and run another round. Confirm that the same stored edit affects both rounds.
-- [ ] Exercise all existing modes, both RNG directions, chart selection, slow mode, and multiple consecutive answers. Check that counters advance once per answer.
-- [ ] Navigate away during the slow animation and return. Confirm that no stale round or duplicate timer affects the new screen.
-- [ ] Exercise malformed stored data and failed writes in an isolated browser context. Confirm visible errors and retention of the original stored values.
-- [ ] Compare the trainer and editor against the visual baseline. Run lint, the test suite, and the production build.
+- [x] Run deterministic fixtures through the old and new rule implementations. Compare results for unchanged behavior.
+- [x] Assert every agreed behavior correction separately. Link the reproduction and approval rather than hiding the difference in updated snapshots.
+- [x] Use a fresh browser context. Confirm that the first simulation works without opening the editor or waiting for hidden charts.
+- [x] Edit a range, run a round, refresh, and run another round. Confirm that the same stored edit affects both rounds.
+- [x] Exercise all existing modes, both RNG directions, chart selection, slow mode, and multiple consecutive answers. Check that counters advance once per answer.
+- [x] Navigate away during the slow animation and return. Confirm that no stale round or duplicate timer affects the new screen.
+- [x] Exercise malformed stored data and failed writes in an isolated browser context. Confirm visible errors and retention of the original stored values.
+- [x] Compare the trainer and editor against the visual baseline. Run lint, the test suite, and the production build.
+
+### Block 3 results and boundaries
+
+The baseline for this phase is merged Block 2 at `3b5749d060b8cda9413d69ca5ee25592c1236c0b`.
+`hands.js`, `positions.js`, and `engine.js` own the poker rules.
+`ranges.js` interprets the compact dataset; `range-storage.js` alone parses and writes saved overrides.
+`useTrainer.js` owns effective ranges, settings, round phases, animation steps, and counters.
+`RangeEditor` keeps local selection and sliders, with one React-rendered chart.
+`PokerTable` derives cards, seats, controls, and feedback from the round.
+No trainer code creates DOM cells, changes DOM text or styles, or fetches its charts.
+
+The canonical dataset remains byte-for-byte unchanged.
+Vite serves and emits `/charts.json` from it for public compatibility; the hand-maintained public copy is removed.
+The trainer imports its defaults with the lazy feature rather than issuing chart requests.
+Unedited defaults are no longer copied into browser storage.
+Existing valid saved ranges still replace defaults as whole sparse ranges under their original keys.
+
+Each round snapshots its frequencies, slow-mode setting, and RNG direction.
+Edits and option changes apply to the next round rather than changing a question already dealt.
+Successful saves update both the chart and engine data.
+Failed saves retain the previous chart and stored values and report an error inside the open editor.
+Malformed saved ranges prevent training and retain the original values for recovery outside the app.
+No reset or data-management feature was added.
+
+Three-bet-only generation selects the same first-open cases conditioned on an opening raise.
+Candidate weights use the chance that earlier positions did not open, then the current position's opening rate.
+This removes recursive rejection sampling without a retry budget or a new poker mode.
+Zero total opening probability produces the approved explicit error.
+
+Receipts stay in `<session artifacts>\block-3`:
+
+| Receipt | Result |
+| --- | --- |
+| `domain-comparison.json` | All 169 grid cells and signed keys match the merged implementation. Pairs and offsuit round trips match; 78 suited suffixes are the approved correction. |
+| `tests.log` | Twelve focused app, rule, and storage cases pass on the existing runner. The old repeated hand-mapping cases were consolidated, not retained as a second API. |
+| `lint.log`, `build.log` | Lint has no errors or warnings. The production build succeeds and emits the original public chart bytes. |
+| `browser-results.json`, `browser.log` | Eleven real-browser scenarios pass, including all modes, both RNG directions, consecutive identical hands, edits across reload, access/quota/malformed-storage errors, and navigation during slow animation. No page errors were reported. |
+| `image-comparison.json` | All eight initial desktop/mobile website, trainer, and editor captures are pixel-identical to the original baseline. |
+| `decisions.tsv` | The bounded execution sequence, approvals, observation corrections, and verification trail. |
+
+The unchanged initial screenshots are not evidence that the old bugs remain.
+Separate browser cases assert the approved corrected outcomes.
+This phase is ready for PR review and preview-deployment checks. It has not been merged into master.
+Hosted Vercel behavior and non-Edge browsers remain outside the local verification claim.
 
 **Review boundary.** Stop with the final module boundaries, behavior comparisons, and the list of removed legacy paths.
 

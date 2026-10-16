@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import App from './App.jsx';
 import charts from './features/poker/default-ranges.json';
 
@@ -13,18 +13,8 @@ vi.mock('@vercel/speed-insights/react', () => ({
   SpeedInsights: () => null,
 }));
 
-const originalFetch = global.fetch;
-
-beforeEach(() => {
-  global.fetch = vi.fn().mockResolvedValue({
-    ok: true,
-    json: async () => charts,
-  });
-});
-
 afterEach(() => {
   cleanup();
-  global.fetch = originalFetch;
   Object.keys(charts).forEach((key) => localStorage.removeItem(key));
 });
 
@@ -71,6 +61,7 @@ test('the trainer retains its controls, initial counters, and selected chart', a
   expect(screen.getByText('Num Correct: 0')).toBeInTheDocument();
   expect(screen.getByText('Total Sims: 0')).toBeInTheDocument();
 
+  fireEvent.click(screen.getByRole('button', { name: /Manage Charts/ }));
   await waitFor(() => {
     expect(document.getElementById('utg').querySelectorAll('td')).toHaveLength(169);
   });
