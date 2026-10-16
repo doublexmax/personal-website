@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { PokerNavbar } from './PokerNavbar.jsx';
-import { Chart } from './Chart.jsx';
+import { TrainerControls } from './TrainerControls.jsx';
+import { RangeChart } from './RangeChart.jsx';
 
-import { nineMaxGenerator } from './generator';
+import { nineMaxGenerator } from './scenario-generator.js';
 
-import { nine_max_positions, suit_colors } from './info';
-import { sleep } from './utils';
+import { nine_max_positions, suit_colors } from './poker-data.js';
+import { sleep } from './poker-utils.js';
 
 import './poker.css';
 
-export default function Poker() {
+export default function PokerTrainerPage() {
   const [selectedPosition, setSelectedPosition] = useState('utg');
   const [selected3BPosition, setSelected3BPosition] = useState('empty');
 
@@ -264,8 +264,8 @@ export default function Poker() {
   }
 
   return (
-    <div className="Poker">
-      <PokerNavbar 
+    <div className="poker-trainer">
+      <TrainerControls
         pause={pause} setPause={setPause} 
         invertRNG={invertRNG} setInvertRNG={setInvertRNG} 
         RFIOnly={RFIOnly} setRFIOnly={setRFIOnly}
@@ -322,12 +322,12 @@ export default function Poker() {
             </div>
           </div>
           {nine_max_positions.map((position) => (
-            <Chart key={position} position={position} visible={selected3BPosition === 'empty' && selectedPosition === position} />
+            <RangeChart key={position} position={position} visible={selected3BPosition === 'empty' && selectedPosition === position} />
           ))}
 
           {nine_max_positions.map((position, idx) => (
             idx > nine_max_positions.indexOf(selectedPosition) &&
-            <Chart key={`${position}_vs_${selectedPosition}`} position={position} opener={selectedPosition} visible={selected3BPosition === position}></Chart>
+            <RangeChart key={`${position}_vs_${selectedPosition}`} position={position} opener={selectedPosition} visible={selected3BPosition === position}></RangeChart>
           ))}
           <button id="closeBtn" onClick={hidePopup}>Close</button>
         </div>
@@ -341,7 +341,7 @@ export default function Poker() {
         </span>
       </div>
       <div className="table-container">
-        <div className="table">
+        <div className="poker-table-surface">
           {nine_max_positions.map((position) => (
             <div key={position} className={`seat ${position}`}>
               {position.toUpperCase()}

@@ -1,6 +1,8 @@
-import './index.css';
+import { Link } from 'react-router-dom';
+import { images } from '../data/images.js';
+import './home.css';
 
-function Home() {
+function HomePage() {
     return (
         <div className="home">
             <div className="row mb-1">
@@ -9,12 +11,12 @@ function Home() {
                     <p>Software Engineer @ Microsoft inside of Azure Core's OneDeploy team.</p>
                     <p>Computer Science and Mathematics Alum from Northeastern University.</p>
                     <div>
-                        <a className="btn btn-portfolio" href="/portfolio">Portfolio <i className="bi bi-arrow-right"></i></a>
+                        <Link className="btn btn-portfolio" to="/portfolio">Portfolio <i className="bi bi-arrow-right"></i></Link>
                     </div>
                 </div>
                 <div className="extra col-3">
                     <figure className="figure">
-                        <img src="1657750750531.jpg" className="me-image figure-img img-fluid" alt=""></img>
+                        <img src={images.portrait} className="me-image figure-img img-fluid" alt=""></img>
                         <figcaption className="figure-caption text-white text-left">Contact Me: <a href="mailto:maxxtandon@gmail.com">maxxtandon@gmail.com</a></figcaption>
                     </figure>
                 </div>
@@ -52,4 +54,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomePage;

@@ -1,0 +1,46 @@
+:where(.portfolio) .first-row {
+  animation-name: site-fade-in;
+  animation-duration: 5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+:where(.portfolio) .second-row {
+  animation-name: site-fade-in;
+  animation-duration: 5s;
+  animation-delay:.5s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@media (max-width: 768px) {
+
+
+  :where(.portfolio) .first-row .col-md {
+    display: inline;
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  :where(.portfolio) .col-md {
+    margin-bottom: 2vh;
+  }
+}
+
+.portfolio-header {
+    color: #FFC857;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.portfolio .row {
+    max-width: 80%;
+}
+
+.portfolio-header {
+    width: -webkit-fill-available;
+}

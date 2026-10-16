@@ -1,0 +1,44 @@
+:where(.site-layout) .home, :where(.site-layout) .portfolio {
+  margin-left:15%;
+  margin-top: -12px;
+}
+
+:where(.site-layout) .site-content {
+  max-width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+
+
+:where(.site-layout) .row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+:where(.site-layout) .row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+
+  :where(.site-layout) .row {
+    display: block;
+  }
+
+  :where(.site-layout) .site-content {
+    margin: 0;
+  }
+
+}
+
+
+@media (min-width: 576px) and (max-width: 768px) {
+
+  :where(.site-layout) .site-content {
+    margin-top: 14px;
+  }
+}

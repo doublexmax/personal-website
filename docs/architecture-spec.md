@@ -1,6 +1,6 @@
 # Website refactoring specification
 
-Status is the target specification. Block 1 tooling is implemented and locally verified. Blocks 2 and 3 remain unimplemented.
+Status is the target specification. Block 1 is merged. Block 2 ownership is implemented and locally verified. Block 3 remains unimplemented.
 The [refactoring plan](refactor-plan.md) defines the work order and acceptance evidence.
 
 ## Purpose and scope
@@ -51,17 +51,17 @@ public\
   manifest.json
   robots.txt
   Maxx_Tandon_Resume.pdf
-  [existing asset URLs retained where needed]
-
-src\
-  main.jsx
-  App.jsx
-  assets\
+  charts.json
+  images\
     logo.png
     portrait-maxx.jpg
     dealer-school-banner.png
     fischer-random-banner.png
     gto-trainer-banner.png
+
+src\
+  main.jsx
+  App.jsx
   components\
     SiteHeader.jsx
     site-header.css
@@ -75,6 +75,7 @@ src\
     PortfolioPage.jsx
     portfolio.css
   data\
+    images.js
     projects.js
   styles\
     global.css
@@ -97,6 +98,8 @@ src\
 Test files live beside the modules they cover.
 The tree omits generated output and test artifacts.
 Component styles may share an existing owner file when a separate stylesheet would add no clarity.
+Until Block 3, the trainer uses `RangeChart.jsx`, `scenario-generator.js`, `poker-data.js`, and `poker-utils.js`.
+These descriptive feature-local files retain the existing logic while its final state and persistence boundaries remain pending.
 
 ### Current-to-target mapping
 
@@ -198,19 +201,26 @@ The app retains `/`, `/portfolio`, and `/gto-trainer`.
 Direct route visits and refreshes work on Vercel.
 The existing resume URL, external links, and required public asset URLs remain valid.
 
-Source assets can have descriptive names and fingerprinted imports.
+Images have descriptive names in `public\images`, with URLs imported from `src\data\images.js`.
+The source and build each contain one copy per image. Existing public cache behavior remains.
+This avoids SSR-only image-loader exceptions and custom build-time alias machinery.
 Existing asset URLs use retained paths or explicit redirects when a rename would break a consumer.
 An unreferenced public file is not automatically safe to delete.
 The current `/charts.json` endpoint remains during the migration while callers still use it.
 Its final public compatibility requirement is resolved before removal.
+The five renamed legacy image paths use temporary redirects defined in `vercel.json`.
+Development and preview read that same redirect list rather than maintaining a second mapping.
 
 ## CSS and visual contract
 
 `global.css` owns font defaults, reset rules, base colors, and shared tokens that have actual consumers.
 Page and feature styles do not change `body` to switch layout or background.
-The website and trainer roots own their respective backgrounds and layout.
+The existing shared green page background is one global default and does not change between routes.
+Feature-specific table and panel backgrounds remain inside their owners.
+Page and trainer roots own their layout. No feature stylesheet changes the body.
 
 Trainer selectors are scoped beneath `.poker-trainer` or use explicit poker class names.
+Scope roots use `:where` when added specificity would change the existing Bootstrap cascade.
 Generic table-element selectors do not affect unrelated pages.
 The editor retains the current meaning of the raise, call, and fold colors.
 Renamed CSS classes and DOM selectors change together while imperative code still exists.

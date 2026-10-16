@@ -50,7 +50,9 @@ Generated files go to `dist`, which is not committed.
 
 `vercel.json` selects Vite, runs `npm run build`, and serves `dist`.
 Its SPA rewrite supports direct visits and refreshes at `/portfolio` and `/gto-trainer`.
-Existing documents, images, `charts.json`, and other files in `public` keep their public URLs.
+Documents, the favicon, manifest, and `charts.json` keep their public URLs.
+The five renamed images have temporary legacy redirects defined in `vercel.json`.
+Development and preview use the same redirect list.
 Bootstrap CSS and Bootstrap Icons retain their existing CDN versions.
 Vercel Analytics and Speed Insights remain mounted in the app.
 React and React Router retain their pre-migration versions.
@@ -70,11 +72,18 @@ Local preview does not verify the live Vercel project's settings.
 
 ## Source and refactoring scope
 
-`index.html` loads `src\index.jsx`, which mounts `src\App.jsx`.
+`index.html` loads `src\main.jsx`, which mounts the browser router and `src\App.jsx`.
 Components containing JSX use `.jsx`. Other JavaScript modules use `.js`.
-Public documents and images remain in `public`.
+Website pages live in `src\pages`.
+Shared website chrome and cards live in `src\components`.
+Project and image records live in `src\data`.
+Trainer components, rules, fixtures, and styles live in `src\features\poker`.
+The trainer's JavaScript and CSS load only when its route is visited.
+Global CSS is imported once. Page and feature rules stay scoped to their owners.
+Public documents remain in `public`. Images have descriptive names in `public\images`.
 Poker ranges are still stored locally in the browser under the existing keys.
 
 The [refactoring plan](docs/refactor-plan.md) records the baseline and work blocks.
 The [architecture specification](docs/architecture-spec.md) defines the eventual file and state ownership.
-The build migration does not fix the recorded trainer defects or perform the later file-organization and trainer refactors.
+The build and file-ownership blocks do not fix the recorded trainer defects.
+The trainer's state and persistence refactor remains a separate block.

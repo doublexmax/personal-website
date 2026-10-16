@@ -1,0 +1,21 @@
+:where(.project-card) .card-title {
+  color: #53dd6c;
+}
+
+:where(.project-card) .card-text {
+  font-size: 15px;
+}
+
+:where(.project-card) .card-img-top {
+  border: 1px solid purple;
+  border-radius: 2px;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .project-card {
+    width: fit-content;
+  }
+
+}

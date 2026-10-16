@@ -3,6 +3,13 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/MT.png", "destination": "/images/logo.png", "permanent": false },
+    { "source": "/1657750750531.jpg", "destination": "/images/portrait-maxx.jpg", "permanent": false },
+    { "source": "/dealer_school_banner.png", "destination": "/images/dealer-school-banner.png", "permanent": false },
+    { "source": "/fischer_random_banner.png", "destination": "/images/fischer-random-banner.png", "permanent": false },
+    { "source": "/gto_trainer.png", "destination": "/images/gto-trainer-banner.png", "permanent": false }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

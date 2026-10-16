@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { cards_to_num, num_to_cards } from './info';
-import { getPokerHand } from './utils';
+import { cards_to_num, num_to_cards } from './poker-data.js';
+import { getPokerHand } from './poker-utils.js';
 
 test.each([
   [0, 0, 'AA'],

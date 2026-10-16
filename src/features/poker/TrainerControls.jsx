@@ -1,4 +1,7 @@
-export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, setRFIOnly, threeBetOnly, setThreeBetOnly}) {
+import { Link } from 'react-router-dom';
+import { images } from '../../data/images.js';
+
+export function TrainerControls({pause, setPause, invertRNG, setInvertRNG, RFIOnly, setRFIOnly, threeBetOnly, setThreeBetOnly}) {
     function togglePopup() {
         if (document.getElementById("popupBackground").style.display === "flex") {
             hidePopup();
@@ -17,9 +20,9 @@ export function PokerNavbar({pause, setPause, invertRNG, setInvertRNG, RFIOnly, 
     };
 
     return (
-        <div className="PokerNavbar">
-            <nav className="navbar sticky-top poker-nav ">
-            <a className="navbar-brand home-btn" href="/"><img src="MT.png" className="home-btn-img" alt=""></img></a>
+        <div className="trainer-controls">
+            <nav className="navbar nav-shell sticky-top poker-nav">
+            <Link className="navbar-brand home-btn" to="/"><img src={images.logo} className="home-btn-img" alt=""></img></Link>
             <div className="form-check">
                 <input className="form-check-input" type="checkbox" value="" id="pause-check" checked={pause} onChange={() => setPause(pause ^ 1)} />
                 <label className="form-check-label pause-label" htmlFor="pause-check">
