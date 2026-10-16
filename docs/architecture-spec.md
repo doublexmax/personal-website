@@ -1,6 +1,6 @@
 # Website refactoring specification
 
-Status is the target specification. Block 1 is merged. Block 2 ownership is implemented and locally verified. Block 3 remains unimplemented.
+Status is implemented and locally verified through Block 3. Blocks 1 and 2 are merged. Block 3 awaits review.
 The [refactoring plan](refactor-plan.md) defines the work order and acceptance evidence.
 
 ## Purpose and scope
@@ -51,7 +51,6 @@ public\
   manifest.json
   robots.txt
   Maxx_Tandon_Resume.pdf
-  charts.json
   images\
     logo.png
     portrait-maxx.jpg
@@ -98,8 +97,8 @@ src\
 Test files live beside the modules they cover.
 The tree omits generated output and test artifacts.
 Component styles may share an existing owner file when a separate stylesheet would add no clarity.
-Until Block 3, the trainer uses `RangeChart.jsx`, `scenario-generator.js`, `poker-data.js`, and `poker-utils.js`.
-These descriptive feature-local files retain the existing logic while its final state and persistence boundaries remain pending.
+The transitional `RangeChart.jsx`, `scenario-generator.js`, `poker-data.js`, and `poker-utils.js` paths are removed.
+The public `/charts.json` file is generated for compatibility and is not another source-tree dataset.
 
 ### Current-to-target mapping
 
@@ -148,12 +147,20 @@ A generated scenario has named `hand`, `heroPosition`, `history`, and `frequenci
 The training round also owns its RNG value and display suits.
 Sampling occurs once for the relevant round, not during repeated React renders.
 The exact RNG thresholds and history semantics come from the approved behavior contract.
+For integer RNG values zero through 99, normal evaluation orders fold, call, then raise in half-open intervals.
+Inverted evaluation orders raise, call, then fold.
+Only the first opening raise is represented in a facing-open scenario.
+Hand classes remain uniformly sampled. RFI still maps an unopened big blind to small blind.
+Three-bet-only selection conditions the uniform hero-seat and first-open distribution on an opening raise.
+It reports an error if the opening probability is zero instead of retrying indefinitely.
 
 Training mode has one value, `all`, `rfi`, or `three-bet`.
 Slow mode and inverted RNG remain independent boolean options.
 Training phase has one value, `idle`, `dealing`, `awaiting-answer`, or `answered`.
 Controls derive their visibility and availability from that phase.
 An answer is accepted once for an awaiting round and updates the counters once.
+Round frequencies, RNG direction, and slow-mode timing are snapshots.
+Settings and chart edits affect the next round, not a question already dealt.
 
 ### Module boundaries
 
@@ -191,6 +198,8 @@ Each valid saved range replaces its corresponding default range as a whole, with
 Default hands are not merged into a saved sparse range. Missing hands in that saved range remain folds.
 Edits update the effective ranges used by the chart and engine.
 Persistence failure is visible. Unsaved changes are not presented as successfully saved.
+Unedited defaults do not create browser-storage entries.
+If a save fails, both the effective range and persisted range retain their previous values.
 
 Malformed data is reported with the affected range identified.
 Original stored content remains intact. The refactor never calls `localStorage.clear()`.
@@ -206,8 +215,9 @@ The source and build each contain one copy per image. Existing public cache beha
 This avoids SSR-only image-loader exceptions and custom build-time alias machinery.
 Existing asset URLs use retained paths or explicit redirects when a rename would break a consumer.
 An unreferenced public file is not automatically safe to delete.
-The current `/charts.json` endpoint remains during the migration while callers still use it.
-Its final public compatibility requirement is resolved before removal.
+The `/charts.json` endpoint remains for public compatibility, with identical source bytes.
+Vite reads the canonical dataset to serve that path during development/preview and emit it during production builds.
+The trainer reads its bundled defaults without fetch or chart-mount initialization.
 The five renamed legacy image paths use temporary redirects defined in `vercel.json`.
 Development and preview read that same redirect list rather than maintaining a second mapping.
 
@@ -258,12 +268,14 @@ A production build alone does not establish that the live deployment configurati
 
 ## Behavior changes require a separate decision
 
-This specification does not approve changes to poker probabilities, scenario support, or hand-sampling weights.
+The operator approved the recorded endpoint, opener-selection, notation, mode-exclusivity, rendering, and lifecycle corrections for Block 3.
+These corrections do not add scenario support, alter the dataset, or switch to physical-card combination weighting.
 The existing dataset remains numerically unchanged.
 Source-level concerns become verified defects only after reproduction.
 
 A required correction records the observed behavior, intended behavior, smallest correction, and regression case.
-The operator approves observable differences before implementation.
+The approved Block 3 behavior contract and receipts are in the refactoring plan.
+Other observable differences still require approval before implementation.
 A larger bug fix or new capability is separate work, not justification for expanding this refactor.
 
 ## Completion contract

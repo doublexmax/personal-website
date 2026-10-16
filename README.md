@@ -51,6 +51,7 @@ Generated files go to `dist`, which is not committed.
 `vercel.json` selects Vite, runs `npm run build`, and serves `dist`.
 Its SPA rewrite supports direct visits and refreshes at `/portfolio` and `/gto-trainer`.
 Documents, the favicon, manifest, and `charts.json` keep their public URLs.
+Vite generates `/charts.json` from the trainer's single canonical dataset.
 The five renamed images have temporary legacy redirects defined in `vercel.json`.
 Development and preview use the same redirect list.
 Bootstrap CSS and Bootstrap Icons retain their existing CDN versions.
@@ -82,8 +83,17 @@ The trainer's JavaScript and CSS load only when its route is visited.
 Global CSS is imported once. Page and feature rules stay scoped to their owners.
 Public documents remain in `public`. Images have descriptive names in `public\images`.
 Poker ranges are still stored locally in the browser under the existing keys.
+The trainer loads valid saved overrides before enabling simulation.
+Unedited defaults stay in the bundle rather than being copied into storage.
+Edits affect the selected chart and the next simulation after a successful save.
+Malformed data and unavailable storage produce visible errors without clearing the saved values.
+
+Trainer rules live in `hands.js`, `positions.js`, and `engine.js`.
+Range parsing and persistence live in `ranges.js` and `range-storage.js`.
+The trainer hook owns rounds and counters; React renders the controls, table, and selected chart.
+Slow-mode and RNG settings apply when a round starts.
 
 The [refactoring plan](docs/refactor-plan.md) records the baseline and work blocks.
 The [architecture specification](docs/architecture-spec.md) defines the eventual file and state ownership.
-The build and file-ownership blocks do not fix the recorded trainer defects.
-The trainer's state and persistence refactor remains a separate block.
+The Block 3 changes include the operator-approved corrections recorded in the plan.
+No accounts, backend, additional poker formats, or storage migration are introduced.
