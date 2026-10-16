@@ -1,97 +1,98 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-html {
-  height: 100%;
+:root {
+  --content-width: 72rem;
+  --page-gutter: clamp(1rem, 4vw, 2rem);
+  --section-space: clamp(2.5rem, 6vw, 5rem);
+  color-scheme: dark;
 }
 
-* {
-  margin: 0;
-  font-family: "Nunito Sans";
-  color: #F4F7F5;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle, #008000, #004d00, #001a00, #000000);
-  overflow-x: hidden;
-  height: 100%;
+  color: #f4f7f5;
+  background: radial-gradient(ellipse at top, #123d29, #081b13 60%, #050d09);
+  font-family: 'Nunito Sans', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
-@keyframes site-fade-in {
-  from {
-    opacity: 0%;
-  }
-  to {
-    opacity: 100%;
-  }
+figure {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select {
+  font: inherit;
 }
 
 a {
   color: #8ee5c3;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: #c3f5df;
+}
+
+:focus-visible {
+  outline: 3px solid #ffc857;
+  outline-offset: 3px;
 }
 
 .btn {
-  transform: scale(1);
-  transition:0.2s ease-out;
-  color: white;
-}
-
-.btn:hover {
-  transition-property: transform, background-color;
-  transition-duration:0.2s;
-  transform: scale(1.1);
-  color: cornsilk;
-  background-color: crimson;
-}
-
-.bi-arrow-right::before {
-  color: black;
-  width: 1em;
-  display: inline-block;
-  padding: 1px;
-  font-size: large;
-}
-
-.nav-shell {
-  padding-top: 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  max-width: 70%;
-  margin: 0 auto;
-  border-bottom: 1px solid #f2f2f2;
-  flex-wrap: unset;
-}
-.nav-shell a {
-  margin-left: 16px;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: normal;
   text-decoration: none;
-  padding: 6px;
-}
-a:hover {
-  color: #f1356d;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-@media (max-width: 768px) {
-
-  .nav-shell a {
-    margin: auto;
-  }
-
-  .btn-danger {
-    font-size: small;
-  }
-
+.btn:focus-visible {
+  outline: 3px solid #ffc857;
+  outline-offset: 3px;
+  box-shadow: none;
 }
 
-
-@media (min-width: 576px) and (max-width: 768px) {
-
-  .nav-shell {
-    flex-wrap: wrap;
-  }
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
 }
 
-@media (max-width: 576px) {
-  .nav-shell {
-    flex-wrap: wrap;
+.bi {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

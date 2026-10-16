@@ -97,3 +97,11 @@ The [refactoring plan](docs/refactor-plan.md) records the baseline and work bloc
 The [architecture specification](docs/architecture-spec.md) defines the eventual file and state ownership.
 The Block 3 changes include the operator-approved corrections recorded in the plan.
 No accounts, backend, additional poker formats, or storage migration are introduced.
+
+## Layout
+
+The site uses a shared content width and responsive gutters.
+Page styles own the homepage sections and portfolio grid.
+The trainer stylesheet owns its toolbar, table, round controls, and chart editor.
+On narrow screens, chart scrolling stays inside the editor rather than widening the page.
+Layout changes do not change poker rules, saved ranges, or route destinations.
