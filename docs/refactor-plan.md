@@ -69,7 +69,8 @@ Do not deploy production to complete this block.
 ### Block 1 local evidence
 
 The current toolchain uses Vite 8.3.4, Vitest 5.0.4, and ESLint 10.12.0.
-React 18.3.1, React DOM 18.3.1, React Router 6.23.1, and Analytics 1.3.1 retain their baseline versions.
+At the end of Block 1, React 18.3.1, React DOM 18.3.1, React Router 6.23.1, and Analytics 1.3.1 retained their baseline versions.
+React Router now uses 7.18.4 to resolve security advisories.
 Speed Insights changed from 1.0.11 to 1.3.1 to resolve its obsolete optional-framework peer constraints with the modern build graph.
 Its existing React integration remains mounted once.
 
