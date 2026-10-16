@@ -56,7 +56,7 @@ The five renamed images have temporary legacy redirects defined in `vercel.json`
 Development and preview use the same redirect list.
 Bootstrap CSS and Bootstrap Icons retain their existing CDN versions.
 Vercel Analytics and Speed Insights remain mounted in the app.
-React and React Router retain their pre-migration versions.
+React retains its pre-migration version. React Router uses 7.18.4 to resolve security advisories.
 Speed Insights uses 1.3.1 for compatibility with the new dependency graph.
 
 If the Vercel project has explicit dashboard overrides, align them with the repository configuration:
