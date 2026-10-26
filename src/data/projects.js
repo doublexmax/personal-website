@@ -40,4 +40,17 @@ export const projects = [
     linkLabel: 'Try it yourself',
     external: false,
   },
+  {
+    id: 'papplu',
+    title: 'Papplu AI',
+    image: images.papplu,
+    imageAlt: 'Papplu AI card table banner',
+    description: [
+      'Play 21-card Papplu against AI, practice solo, or pass the device between friends. Configure up to six human or AI seats.',
+      'Explore melds and minimum deadwood in Hand Builder. The game and neural model run in your browser without an account or backend.',
+    ],
+    href: '/papplu',
+    linkLabel: 'Play Papplu',
+    external: false,
+  },
 ];

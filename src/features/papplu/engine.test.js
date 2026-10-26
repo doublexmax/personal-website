@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { execFileSync, spawnSync } from 'node:child_process';
-import { appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import {
+  appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -51,6 +53,25 @@ describe('the vendored browser engine', () => {
       });
       expect(sync.status).toBe(1);
       expect(sync.stderr).toContain('The source must be the upstream PappluAI web directory.');
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+
+  test('sync rejects a redirected destination before it creates files outside the engine directory', () => {
+    const fixture = mkdtempSync(join(tmpdir(), 'papplu-path-'));
+    try {
+      mkdirSync(join(fixture, 'scripts'));
+      cpSync(join(root, 'scripts', 'sync-papplu.mjs'), join(fixture, 'scripts', 'sync-papplu.mjs'));
+      const outside = join(fixture, 'outside');
+      mkdirSync(outside);
+      symlinkSync(outside, join(fixture, 'src'), process.platform === 'win32' ? 'junction' : 'dir');
+      const result = spawnSync(process.execPath, [
+        'scripts/sync-papplu.mjs', '--source', join(root, 'src', 'features', 'papplu', 'engine'),
+      ], { cwd: fixture, encoding: 'utf8' });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain('The engine destination must stay inside src/features/papplu/engine.');
+      expect(readdirSync(outside)).toEqual([]);
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }

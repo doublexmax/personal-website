@@ -40,11 +40,13 @@ test('the portfolio retains its project destinations', () => {
     'https://github.com/willredding314/FischerRandom'
   );
   expect(screen.getByRole('link', { name: 'Try it yourself' })).toHaveAttribute('href', '/gto-trainer');
+  expect(screen.getByRole('link', { name: 'Play Papplu' })).toHaveAttribute('href', '/papplu');
   expect(screen.getAllByRole('img').map((image) => image.getAttribute('src'))).toEqual([
     '/images/logo.png',
     '/images/dealer-school-banner.png',
     '/images/fischer-random-banner.png',
     '/images/gto-trainer-banner.png',
+    '/images/papplu-banner.svg',
   ]);
 });
 
@@ -83,5 +85,25 @@ test('internal navigation renders the portfolio through the existing router', ()
   expect(screen.getByRole('heading', { name: 'A Collection of My Projects' })).toBeInTheDocument();
   expect(window.location.pathname).toBe('/portfolio');
   expect(scroll).toHaveBeenCalledWith(0, 0);
+  scroll.mockRestore();
+});
+
+test('the Papplu route is isolated from site chrome and navigates back to the portfolio', async () => {
+  window.history.replaceState({}, '', '/papplu');
+  const scroll = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  render(<App />, { wrapper: BrowserRouter });
+
+  expect(await screen.findByRole('heading', { name: 'A seat at your own table.' })).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: 'Play table' })).toHaveAttribute('aria-selected', 'true');
+  expect(screen.getByRole('tab', { name: 'Hand Builder' })).toBeInTheDocument();
+  expect(document.querySelector('.site-header')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
+
+  fireEvent.click(screen.getByRole('link', { name: 'Back to portfolio' }));
+
+  expect(screen.getByRole('heading', { name: 'A Collection of My Projects' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Play Papplu' })).toHaveAttribute('href', '/papplu');
+  expect(document.querySelector('.papplu-page')).not.toBeInTheDocument();
+  expect(window.location.pathname).toBe('/portfolio');
   scroll.mockRestore();
 });

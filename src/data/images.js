@@ -4,4 +4,5 @@ export const images = {
   dealerSchool: '/images/dealer-school-banner.png',
   fischerRandom: '/images/fischer-random-banner.png',
   trainer: '/images/gto-trainer-banner.png',
+  papplu: '/images/papplu-banner.svg',
 };
