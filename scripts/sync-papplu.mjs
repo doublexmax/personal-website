@@ -55,11 +55,16 @@ function check() {
 function sync(source) {
   const sourcePath = realpathSync(resolve(source));
   if (sourcePath === destination) throw new Error('The source must be the upstream PappluAI web directory.');
-  const contents = new Map(files.map((name) => [name, readFileSync(join(sourcePath, name))]));
   const revision = execFileSync('git', ['-C', sourcePath, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const dirty = execFileSync('git', [
     '-C', sourcePath, 'status', '--porcelain', '--untracked-files=all', '--', ...files,
   ], { encoding: 'utf8' }).trim();
+  const contents = new Map(files.map((name) => [
+    name,
+    dirty
+      ? readFileSync(join(sourcePath, name))
+      : execFileSync('git', ['-C', sourcePath, 'show', `${revision}:./${name}`], { maxBuffer: Infinity }),
+  ]));
   const manifest = {
     repository,
     revision,

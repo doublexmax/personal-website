@@ -31,15 +31,15 @@ async function screenshot(page, name) {
   await page.screenshot({ path: join(evidenceDirectory, name), fullPage: true });
 }
 
-async function newPage({ mobile = false, workers = true } = {}) {
+async function newPage({ mobile = false, workers = true, orderedDeal = true } = {}) {
   const context = await browser.newContext({
     viewport: mobile ? { width: 390, height: 844 } : { width: 1280, height: 900 },
     reducedMotion: 'reduce',
   });
-  await context.addInitScript((enableWorkers) => {
-    Math.random = () => 0.9999;
-    if (!enableWorkers) Object.defineProperty(globalThis, 'Worker', { value: undefined });
-  }, workers);
+  await context.addInitScript(({ workers, orderedDeal }) => {
+    if (orderedDeal) Math.random = () => 0.9999;
+    if (!workers) Object.defineProperty(globalThis, 'Worker', { value: undefined });
+  }, { workers, orderedDeal });
   context.on('request', (request) => {
     if (request.url().startsWith(origin)) requests.push(request.url());
   });
@@ -124,6 +124,26 @@ try {
 
   const smallRules = { Decks: 1, 'Cards per hand': 3, 'Required pure sequences': 1 };
   table = await deal(page, 'Solo Practice', { rules: smallRules });
+  const stock = table.getByRole('region', { name: 'Stock', exact: true });
+  const pile = table.getByRole('region', { name: 'Discard pile' });
+  for (let turn = 0; turn < 46; turn += 1) {
+    await table.getByRole('button', { name: 'Draw from stock' }).click();
+    await table.getByRole('button', { name: 'Discard drawn' }).click();
+  }
+  await stock.getByText('1 cards', { exact: true }).waitFor();
+  await pile.getByText('47 cards', { exact: true }).waitFor();
+  await table.getByRole('button', { name: 'Draw from stock' }).click();
+  const lastDrawn = await table.getByRole('button', { name: /, drawn card$/ }).getAttribute('aria-label');
+  await table.getByRole('button', { name: 'Discard drawn' }).click();
+  await stock.getByText('47 cards', { exact: true }).waitFor();
+  await pile.getByText('1 card', { exact: true }).waitFor();
+  assert.equal(await pile.getByRole('img').getAttribute('aria-label'), lastDrawn.split(',')[0]);
+  assert.equal(await table.getByRole('group', { name: 'Hand for You' }).getByRole('button').count(), 3);
+  await table.getByText('Turn 48 · Draw a card', { exact: true }).waitFor();
+  assert.equal(await table.getByRole('button', { name: 'Draw from stock' }).isEnabled(), true);
+  record('After 47 stock draws, recycling restores 47 stock cards and keeps only the new top discard.');
+
+  table = await deal(page, 'Solo Practice', { rules: smallRules });
   await table.getByRole('checkbox', { name: 'Check hand' }).check();
   await table.getByRole('region', { name: 'Hand check' }).getByText('Valid hand', { exact: true }).waitFor();
   assert.equal(await table.getByRole('button', { name: 'Declare win' }).isDisabled(), true);
@@ -135,6 +155,18 @@ try {
   await table.getByRole('heading', { name: 'You win with a valid declaration.' }).waitFor();
   assert.equal(await table.getByText('Round 0 · Total 0', { exact: true }).count(), 1);
   record('A real Worker checks the hand without winning, then resolves an explicit declaration and deadwood summary.');
+
+  await openSetup(table);
+  await table.getByLabel('Seat 1 name').fill('Auto AI');
+  await table.getByLabel('Seat 1 type').selectOption('ai');
+  await table.getByLabel('Seat 1 AI tier').selectOption('casual');
+  await table.getByRole('button', { name: 'Deal new round', exact: true }).click();
+  await table.getByRole('heading', { name: 'Auto AI wins with a valid declaration.' }).waitFor();
+  await table.getByRole('article', { name: 'Auto AI round summary' })
+    .getByRole('heading', { name: 'Minimum deadwood 0 points' }).waitFor();
+  assert.equal(await table.getByRole('button', { name: 'Declare win', exact: true }).count(), 0);
+  assert.equal(await table.getByText('Round 0 · Total 0', { exact: true }).count(), 1);
+  record('An AI seat declares its verified winning hand automatically and finishes with zero deadwood.');
 
   table = await deal(page, 'Pass & Play', {
     rules: { ...smallRules, 'Required pure sequences': 2 },
@@ -234,7 +266,31 @@ try {
   record('The portfolio, home, and trainer work after client-side navigation through Papplu.');
   await context.close();
 
-  const mobile = await newPage({ mobile: true });
+  const shuffled = await newPage({ orderedDeal: false });
+  await shuffled.page.goto(`${origin}/papplu`);
+  const shuffledTable = await deal(shuffled.page, 'AI Watch', { pace: 'instant' });
+  await shuffled.page.waitForFunction(() => {
+    const text = globalThis.document.querySelector('.papplu-round-header .papplu-eyebrow')?.textContent ?? '';
+    return Number(text.match(/Turn (\d+)/)?.[1]) >= 4 || text.includes('Round complete');
+  }, undefined, { timeout: 30_000 });
+  await shuffled.page.getByRole('tab', { name: 'Hand Builder' }).click();
+  await shuffled.page.getByRole('tab', { name: 'Play table' }).click();
+  if (await shuffledTable.getByRole('region', { name: 'Round summary' }).count()) {
+    await shuffledTable.getByRole('heading', { name: 'Minimum deadwood 0 points' }).first().waitFor();
+  } else {
+    assert.equal(await shuffledTable.getByRole('button', { name: 'Resume', exact: true }).isEnabled(), true);
+  }
+  assert.equal(await shuffledTable.getByRole('group', { name: /^Hand for / }).count(), 3);
+  assert.equal(await shuffledTable.getByText('Eliminated', { exact: true }).count(), 0);
+  assert.equal(await shuffledTable.locator('.papplu-downgrade').count(), 0);
+  await shuffledTable.getByRole('region', { name: 'False-declaration scoreboard' })
+    .getByText('Neural + Search', { exact: true }).waitFor();
+  await assertFits(shuffled.page);
+  await screenshot(shuffled.page, 'papplu-shuffled-desktop.png');
+  await shuffled.context.close();
+  record('A native-shuffled default AI Watch game advances through all three seats or a valid win without downgrades.');
+
+  const mobile = await newPage({ mobile: true, orderedDeal: false });
   await mobile.page.goto(`${origin}/papplu`);
   await mobile.page.getByRole('heading', { name: 'A seat at your own table.' }).waitFor();
   assert.match(await mobile.page.locator('.papplu-local-note').innerText(), /browser\. No account\./);

@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { execFileSync, spawnSync } from 'node:child_process';
 import {
-  appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync,
+  appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -72,6 +72,56 @@ describe('the vendored browser engine', () => {
       expect(result.status).toBe(1);
       expect(result.stderr).toContain('The engine destination must stay inside src/features/papplu/engine.');
       expect(readdirSync(outside)).toEqual([]);
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+
+  test.each(['committed', 'working-tree'])('sync preserves exact %s source bytes across checkout line-ending conversion', (sourceState) => {
+    const fixture = mkdtempSync(join(tmpdir(), 'papplu-provenance-'));
+    try {
+      const upstream = join(fixture, 'upstream');
+      const source = join(upstream, 'web');
+      const original = join(fixture, 'original');
+      const originalWeb = join(original, 'web');
+      const website = join(fixture, 'website');
+      mkdirSync(originalWeb, { recursive: true });
+      mkdirSync(join(website, 'scripts'), { recursive: true });
+      cpSync(join(root, 'scripts', 'sync-papplu.mjs'), join(website, 'scripts', 'sync-papplu.mjs'));
+      const names = Object.keys(JSON.parse(readFileSync(join(root, 'src', 'features', 'papplu', 'engine', 'VERSION.json'), 'utf8')).files);
+      const git = (cwd, ...args) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8' });
+      git(original, 'init', '--quiet');
+      git(original, 'config', 'core.autocrlf', 'input');
+      git(original, 'config', 'core.safecrlf', 'false');
+      for (const name of names) {
+        writeFileSync(join(originalWeb, name), name.endsWith('.json') ? '{"fixture":true}\n' : 'export const fixture = true;\n');
+      }
+      git(original, 'add', 'web');
+      git(original, '-c', 'user.name=Papplu tests', '-c', 'user.email=papplu-tests@example.invalid',
+        '-c', 'commit.gpgsign=false', 'commit', '--quiet', '-m', 'Create source fixture',
+        '-m', 'Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>');
+      const revision = git(original, 'rev-parse', 'HEAD').trim();
+      expect(git(original, 'show', 'HEAD:web/game.mjs')).toBe('export const fixture = true;\n');
+      execFileSync('git', ['clone', '--quiet', '--no-hardlinks', '--config', 'core.autocrlf=true',
+        '--config', 'core.safecrlf=false', original, upstream]);
+      expect(readFileSync(join(source, 'game.mjs'), 'utf8')).toBe('export const fixture = true;\r\n');
+      expect(git(upstream, 'status', '--porcelain', '--', 'web').trim()).toBe('');
+      if (sourceState === 'working-tree') {
+        writeFileSync(join(source, 'game.mjs'), 'export const fixture = false;\r\n');
+      }
+      const output = execFileSync(process.execPath, ['scripts/sync-papplu.mjs', '--source', source], {
+        cwd: website, encoding: 'utf8',
+      });
+      expect(output.trim()).toBe('Verified 9 Papplu engine files against VERSION.json.');
+      const destination = join(website, 'src', 'features', 'papplu', 'engine');
+      const manifest = JSON.parse(readFileSync(join(destination, 'VERSION.json'), 'utf8'));
+      expect(manifest).toMatchObject({ revision, sourceState });
+      for (const name of names) {
+        const expected = name.endsWith('.json') ? '{"fixture":true}\n' : 'export const fixture = true;\n';
+        expect(readFileSync(join(destination, name), 'utf8')).toBe(sourceState === 'committed'
+          ? expected
+          : name === 'game.mjs' ? 'export const fixture = false;\r\n' : expected.replace(/\n/g, '\r\n'));
+      }
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }

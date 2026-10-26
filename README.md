@@ -122,10 +122,14 @@ npm run check:papplu
 ```
 
 The sync command records source provenance and file hashes.
+For a clean source checkout, it copies the committed Git blobs rather than checkout-converted line endings.
+For a dirty source checkout, it copies the working files and records `sourceState: "working-tree"`.
 `check:papplu` checks the vendored files offline.
 `npm run build` runs that check through `prebuild` before Vite bundles the app.
 The model loads as a separate Vite URL asset rather than inline weight data in the route JavaScript.
 Git preserves the vendored bytes without line-ending conversion so the same hash check works on Windows and Vercel.
+The current engine comes from [doublexmax/PappluAI#9](https://github.com/doublexmax/PappluAI/pull/9).
+For releases, merge the upstream PR first. Resync if its contents or commit change during review.
 
 ### Verify browser play
 
@@ -141,8 +145,12 @@ If Chromium is missing, install it with `npx playwright install chromium`.
 Set `PAPPLU_BROWSER_CHANNEL` to use another installed Playwright browser channel.
 Set `PAPPLU_EVIDENCE_DIR` to save screenshots and the browser request log.
 The checks cover real Worker and model loading, table play, declarations, private handoffs, Hand Builder, mobile layout, and route isolation.
+Literal score checks use an ordered deck.
+Separate default AI Watch and 390px layout checks use native shuffling.
+The browser checks also drive an automatic AI declaration and a complete stock-recycling cycle.
+The 390px check is desktop-browser viewport emulation, not a physical-device test.
 The local preview does not serve Vercel's telemetry scripts.
-The runner records those two expected 404s separately and does not verify hosted analytics.
+The runner records 404 responses for those two paths separately and does not verify hosted analytics.
 
 ## Source and refactoring scope
 
