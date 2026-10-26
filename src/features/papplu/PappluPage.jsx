@@ -302,7 +302,7 @@ function TableRound({ round, paused, dispatch }) {
           <div className="papplu-piles">
             <section className="papplu-pile" aria-label="Stock">
               <h3>Stock</h3>
-              <p>{round.stockCount} cards</p>
+              <p>{round.stockCount} {round.stockCount === 1 ? 'card' : 'cards'}</p>
               <div className="papplu-pile-card"><CardArt /></div>
               <button type="button" className="papplu-button" disabled={!drawAllowed || !round.stockCount}
                 onClick={() => send('draw', { source: 'stock' })}>Draw from stock</button>

@@ -130,7 +130,7 @@ try {
     await table.getByRole('button', { name: 'Draw from stock' }).click();
     await table.getByRole('button', { name: 'Discard drawn' }).click();
   }
-  await stock.getByText('1 cards', { exact: true }).waitFor();
+  await stock.getByText('1 card', { exact: true }).waitFor();
   await pile.getByText('47 cards', { exact: true }).waitFor();
   await table.getByRole('button', { name: 'Draw from stock' }).click();
   const lastDrawn = await table.getByRole('button', { name: /, drawn card$/ }).getAttribute('aria-label');
