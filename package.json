@@ -15,10 +15,13 @@
   },
   "scripts": {
     "start": "vite",
+    "prebuild": "npm run check:papplu",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test": "vitest"
+    "test": "vitest",
+    "sync:papplu": "node scripts/sync-papplu.mjs",
+    "check:papplu": "node scripts/sync-papplu.mjs --check"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

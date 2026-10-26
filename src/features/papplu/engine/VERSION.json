@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/doublexmax/PappluAI",
+  "revision": "a6589c79f5e58aea5fd94e570e87489cbc2bdb84",
+  "source": "web",
+  "sourceState": "committed",
+  "files": {
+    "cards.mjs": "5bfb461d59aed8ce24a63658fee4c0fcf9dbdfb25d8395561a51b881e194bf79",
+    "evaluate.mjs": "02f8f49a84a9e563cba01f1934310ce5907b3754369bacb2ef04441568e0ec1d",
+    "game.mjs": "843359cea283197de981e2c2a7844f798136f937f8754588a6b1955d539a0847",
+    "qnet.mjs": "b9865981cc810a5745badd41bb3458e7d66602d69e6aea304d59248d1ca8fe77",
+    "ai.mjs": "ff0797336a065bbfac9c0a7c87c33ac1bd49597e737be2e33f44b84a5dde1925",
+    "engine.mjs": "cde031a7d7c98085ea4718afb4e35ad733a097b451f67112955b6a0fd97a13c5",
+    "engine-worker.mjs": "7923676a811005c79add42d89941b78bad0fc09e73120bca3d1f98b300d3ffc5",
+    "table.mjs": "200b6c49f700bcd8aa9b04ad450533a53fa7a7ee1818e04c3eed153315df2dfc",
+    "papplu-model.json": "9df868a348adb6cca36407b2332486b1386408e162dd74c46cf6ecbda3596982"
+  }
+}
