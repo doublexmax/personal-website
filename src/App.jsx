@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage.jsx';
 import PortfolioPage from './pages/PortfolioPage.jsx';
 
 const PokerTrainerPage = lazy(() => import('./features/poker/PokerTrainerPage.jsx'));
+const PappluPage = lazy(() => import('./features/papplu/PappluPage.jsx'));
 
 export default function App() {
   const { pathname } = useLocation();
@@ -28,6 +29,11 @@ export default function App() {
         <Route path="/gto-trainer" element={
           <Suspense fallback={<p role="status">Loading trainer...</p>}>
             <PokerTrainerPage />
+          </Suspense>
+        } />
+        <Route path="/papplu" element={
+          <Suspense fallback={<p role="status">Loading Papplu...</p>}>
+            <PappluPage />
           </Suspense>
         } />
       </Routes>

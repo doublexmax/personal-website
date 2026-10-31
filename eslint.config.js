@@ -3,7 +3,7 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
-  { ignores: ['build/**', 'dist/**', 'node_modules/**'] },
+  { ignores: ['build/**', 'dist/**', 'node_modules/**', 'src/features/papplu/engine/**'] },
   {
     files: ['**/*.{js,jsx}'],
     ...js.configs.recommended,
@@ -24,6 +24,11 @@ export default [
   },
   {
     files: ['**/*.test.{js,jsx}'],
+    languageOptions: { globals: globals.node },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    ...js.configs.recommended,
     languageOptions: { globals: globals.node },
   },
 ];
