@@ -33,9 +33,16 @@ async function assertProject(page) {
   }
   const links = card.getByRole('link');
   assert.deepEqual(await links.evaluateAll(elements => elements.map(link => link.href)), [
-    overviewUrl,
     sourceUrl,
+    overviewUrl,
   ]);
+  const source = card.locator('.card-text').getByRole('link', { name: 'source on GitHub', exact: true });
+  assert.equal(await source.getAttribute('href'), sourceUrl);
+  assert.equal(await source.locator('..').innerText(), 'Browse the source on GitHub.');
+  const footer = card.locator('.card-body > a.btn');
+  assert.equal(await footer.count(), 1, 'The card must have one primary footer action.');
+  assert.equal((await footer.innerText()).trim(), 'Explore pstack');
+  assert.equal(await footer.getAttribute('href'), overviewUrl);
   for (const link of await links.all()) {
     assert.equal(await link.getAttribute('target'), '_blank');
     assert.ok((await link.getAttribute('rel')).split(/\s+/).includes('noreferrer'));
@@ -72,8 +79,8 @@ async function assertKeyboard(page, card) {
     }
     if (destinations.length === 2) break;
   }
-  assert.deepEqual(destinations, [overviewUrl, sourceUrl],
-    'Keyboard focus must reach the overview before the source.');
+  assert.deepEqual(destinations, [sourceUrl, overviewUrl],
+    'Keyboard focus must follow the description source link and then the footer overview button.');
 }
 
 try {
@@ -122,7 +129,7 @@ try {
       await card.screenshot({ path: join(evidenceDirectory, `pstack-card-${width}.png`) });
     }
     if (width === 1280) {
-      for (const [index, destination] of [overviewUrl, sourceUrl].entries()) {
+      for (const [index, destination] of [sourceUrl, overviewUrl].entries()) {
         const popupPromise = page.waitForEvent('popup');
         await card.getByRole('link').nth(index).click();
         const popup = await popupPromise;

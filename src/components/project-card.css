@@ -48,14 +48,7 @@
   margin-top: 0.75rem;
 }
 
-.project-card .project-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
-  margin-top: auto;
-}
-
 .project-card .btn {
+  margin-top: auto;
   text-align: left;
 }

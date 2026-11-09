@@ -63,9 +63,9 @@ export const projects = [
       "An independent Copilot port of poteto's pstack for Cursor. Not an official GitHub product.",
     ],
     href: 'https://doublexmax.github.io/pstack-copilot/',
-    linkLabel: 'Read the overview',
+    linkLabel: 'Explore pstack',
     external: true,
     sourceHref: 'https://github.com/doublexmax/pstack-copilot',
-    sourceLabel: 'View source on GitHub',
+    sourceLabel: 'source on GitHub',
   },
 ];

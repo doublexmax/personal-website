@@ -55,7 +55,8 @@ test('the portfolio presents pstack with its purpose, attribution, overview, and
   window.history.replaceState({}, '', '/portfolio');
   render(<App />, { wrapper: BrowserRouter });
 
-  const card = within(screen.getByRole('heading', { name: 'pstack for GitHub Copilot' }).closest('article'));
+  const article = screen.getByRole('heading', { name: 'pstack for GitHub Copilot' }).closest('article');
+  const card = within(article);
   expect(card.getByText(
     'Coordinate multiple agents in GitHub Copilot with engineering skills, playbooks, and Azure DevOps integration. Investigate bugs, review changes, and build features with explicit verification.'
   )).toBeInTheDocument();
@@ -67,15 +68,21 @@ test('the portfolio presents pstack with its purpose, attribution, overview, and
     '/images/pstack-copilot-banner.svg'
   );
 
-  const overview = card.getByRole('link', { name: 'Read the overview' });
+  const overview = card.getByRole('link', { name: 'Explore pstack' });
   expect(overview).toHaveAttribute('href', 'https://doublexmax.github.io/pstack-copilot/');
   expect(overview).toHaveAttribute('target', '_blank');
   expect(overview).toHaveAttribute('rel', 'noreferrer');
+  expect([...article.querySelectorAll('.btn')]).toEqual([overview]);
+  expect(overview.parentElement).toBe(article.querySelector('.card-body'));
+  expect(overview.querySelector('i')).toHaveAttribute('aria-hidden', 'true');
 
-  const source = card.getByRole('link', { name: 'View source on GitHub' });
+  const source = card.getByRole('link', { name: 'source on GitHub' });
   expect(source).toHaveAttribute('href', 'https://github.com/doublexmax/pstack-copilot');
   expect(source).toHaveAttribute('target', '_blank');
   expect(source).toHaveAttribute('rel', 'noreferrer');
+  expect(source.closest('p').textContent).toBe('Browse the source on GitHub.');
+  expect(article.querySelector('.card-text')).toContainElement(source);
+  expect(card.getAllByRole('link')).toEqual([source, overview]);
 });
 
 test('the trainer retains its controls, initial counters, and selected chart', async () => {
