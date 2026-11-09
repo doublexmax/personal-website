@@ -24,6 +24,12 @@ function record(message) {
 async function assertProject(page) {
   const heading = page.getByRole('heading', { name: 'pstack for GitHub Copilot', exact: true });
   await heading.waitFor();
+  assert.deepEqual(await page.locator('.project-card').getByRole('heading').allTextContents(), [
+    'A Fischer Random Chess Engine',
+    'Game Theory Optimal Poker Trainer',
+    'Papplu AI',
+    'pstack for GitHub Copilot',
+  ]);
   const card = page.getByRole('article').filter({ has: heading });
   assert.equal(await card.count(), 1);
   const text = await card.innerText();

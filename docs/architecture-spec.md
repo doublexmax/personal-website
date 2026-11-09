@@ -54,7 +54,6 @@ public\
   images\
     logo.png
     portrait-maxx.jpg
-    dealer-school-banner.png
     fischer-random-banner.png
     gto-trainer-banner.png
 
