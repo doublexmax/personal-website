@@ -17,9 +17,11 @@
     "start": "vite",
     "prebuild": "npm run check:papplu",
     "build": "vite build",
+    "postbuild": "node scripts/prerender-portfolio.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest",
+    "verify:portfolio": "npm run build && node scripts/verify-portfolio.mjs",
     "verify:papplu": "npm run build && node scripts/verify-papplu.mjs",
     "sync:papplu": "node scripts/sync-papplu.mjs",
     "check:papplu": "node scripts/sync-papplu.mjs --check"

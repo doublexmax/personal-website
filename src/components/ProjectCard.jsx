@@ -13,11 +13,16 @@ export default function ProjectCard({ project }) {
         <div className="card-text">
           {project.description.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         </div>
-        {project.external ? (
-          <a href={project.href} className={className} target="_blank" rel="noreferrer">{label}</a>
-        ) : (
-          <Link to={project.href} className={className}>{label}</Link>
-        )}
+        <div className="project-actions">
+          {project.external ? (
+            <a href={project.href} className={className} target="_blank" rel="noreferrer">{label}</a>
+          ) : (
+            <Link to={project.href} className={className}>{label}</Link>
+          )}
+          {project.sourceHref && (
+            <a href={project.sourceHref} target="_blank" rel="noreferrer">{project.sourceLabel}</a>
+          )}
+        </div>
       </div>
     </article>
   );

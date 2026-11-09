@@ -1,6 +1,6 @@
 # Maxx Tandon's personal website
 
-A client-side React website with a homepage, portfolio, GTO poker trainer, and Papplu AI card table.
+A React website with a homepage, portfolio, GTO poker trainer, and Papplu AI card table.
 Vite builds the existing JavaScript, JSX, and CSS into static files for Vercel.
 
 ## Prerequisites
@@ -46,10 +46,28 @@ npm run preview
 The preview normally runs at `http://localhost:4173`.
 Generated files go to `dist`, which is not committed.
 
+After Vite bundles the app, `postbuild` prerenders `/portfolio` to `dist/portfolio/index.html`.
+It uses the shared React page, layout, and project records, so project descriptions and links appear in the initial HTML.
+The browser hydrates that page with the existing app.
+The homepage, trainer, and Papplu retain their client-rendered SPA fallback.
+Local preview serves the prerendered page at both `/portfolio` and `/portfolio/`.
+
+To check the built portfolio in a browser, run:
+
+```sh
+npm run verify:portfolio
+```
+
+The command checks initial HTML with JavaScript disabled, keyboard focus, navigation, and project links.
+It checks desktop and mobile layouts at 1280px and 390px in Edge on Windows or Playwright Chromium elsewhere.
+Set `PORTFOLIO_EVIDENCE_DIR` to save screenshots or `PORTFOLIO_BROWSER_CHANNEL` to use another installed browser channel.
+These local checks do not verify hosted Vercel routing or a physical mobile device.
+
 ## Deploy to Vercel
 
 `vercel.json` selects Vite, runs `npm run build`, and serves `dist`.
-Its SPA rewrite supports direct visits and refreshes at `/portfolio`, `/gto-trainer`, and `/papplu`.
+The `/portfolio` and `/portfolio/` rewrites serve the prerendered HTML before the catch-all SPA rewrite.
+Other application routes use `dist/index.html` for direct visits and refreshes.
 Documents, the favicon, manifest, and `charts.json` keep their public URLs.
 Vite generates `/charts.json` from the trainer's single canonical dataset.
 The five renamed images have temporary legacy redirects defined in `vercel.json`.
@@ -154,7 +172,10 @@ The runner records 404 responses for those two paths separately and does not ver
 
 ## Source and refactoring scope
 
-`index.html` loads `src\main.jsx`, which mounts the browser router and `src\App.jsx`.
+`index.html` loads `src\main.jsx`, which mounts or hydrates the browser router and `src\App.jsx`.
+`src\prerender.jsx` renders only the portfolio route through a static router.
+`scripts\prerender-portfolio.mjs` loads that entry through Vite and fills a copy of the built HTML's empty root.
+It preserves the template head and bundled assets. The root `dist/index.html` stays empty for SPA fallback routes.
 Components containing JSX use `.jsx`. Other JavaScript modules use `.js`.
 Website pages live in `src\pages`.
 Shared website chrome and cards live in `src\components`.

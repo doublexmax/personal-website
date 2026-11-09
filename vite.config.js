@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 const legacyImages = new Map(deployment.redirects.map(({ source, destination }) => [source, destination]));
 const chartSource = readFileSync(new URL('./src/features/poker/default-ranges.json', import.meta.url), 'utf8');
 
-function configurePublicAssets(server) {
+function configurePublicAssets(server, portfolioPreview = false) {
   server.middlewares.use((request, response, next) => {
     const url = new URL(request.url, 'http://localhost');
     if (url.pathname === '/charts.json') {
@@ -20,6 +20,9 @@ function configurePublicAssets(server) {
       response.end();
       return;
     }
+    if (portfolioPreview && (url.pathname === '/portfolio' || url.pathname === '/portfolio/')) {
+      request.url = '/portfolio/index.html' + url.search;
+    }
     next();
   });
 }
@@ -30,7 +33,9 @@ export default defineConfig({
     {
       name: 'public-compatibility',
       configureServer: configurePublicAssets,
-      configurePreviewServer: configurePublicAssets,
+      configurePreviewServer(server) {
+        configurePublicAssets(server, true);
+      },
       generateBundle() {
         this.emitFile({ type: 'asset', fileName: 'charts.json', source: chartSource });
       },

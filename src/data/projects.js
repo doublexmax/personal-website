@@ -53,4 +53,19 @@ export const projects = [
     linkLabel: 'Play Papplu',
     external: false,
   },
+  {
+    id: 'pstack-copilot',
+    title: 'pstack for GitHub Copilot',
+    image: images.pstack,
+    imageAlt: 'pstack workflow diagram for GitHub Copilot',
+    description: [
+      'Coordinate multiple agents in GitHub Copilot with engineering skills, playbooks, and Azure DevOps integration. Investigate bugs, review changes, and build features with explicit verification.',
+      "An independent Copilot port of poteto's pstack for Cursor. Not an official GitHub product.",
+    ],
+    href: 'https://doublexmax.github.io/pstack-copilot/',
+    linkLabel: 'Read the overview',
+    external: true,
+    sourceHref: 'https://github.com/doublexmax/pstack-copilot',
+    sourceLabel: 'View source on GitHub',
+  },
 ];
