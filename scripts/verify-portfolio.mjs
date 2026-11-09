@@ -27,8 +27,11 @@ async function assertProject(page) {
   const card = page.getByRole('article').filter({ has: heading });
   assert.equal(await card.count(), 1);
   const text = await card.innerText();
-  for (const phrase of [/multiple agents/i, /skills/i, /playbooks/i, /Azure DevOps/,
-    /investigate/i, /review/i, /build/i, /verif/i, /independent/i, /poteto/, /Cursor/]) {
+  for (const phrase of [/custom agents/i, /multi-agent/i, /GitHub Copilot CLI and app/,
+    /skills/i, /playbooks/i, /Azure DevOps/, /investigate/i, /review/i, /build/i,
+    /verif/i, /Double checks agents' claims and test changes against real artifacts/,
+    /Persistent context routing applies saved policies to delegated work/,
+    /independent/i, /poteto/, /Cursor/]) {
     assert.match(text, phrase);
   }
   const links = card.getByRole('link');

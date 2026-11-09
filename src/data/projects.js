@@ -59,7 +59,8 @@ export const projects = [
     image: images.pstack,
     imageAlt: 'pstack workflow diagram for GitHub Copilot',
     description: [
-      'Coordinate multiple agents in GitHub Copilot with engineering skills, playbooks, and Azure DevOps integration. Investigate bugs, review changes, and build features with explicit verification.',
+      'Custom agents, skills, and multi-agent playbooks for GitHub Copilot CLI and app. Investigate bugs, review changes, and build features with explicit verification.',
+      "Double checks agents' claims and test changes against real artifacts. Persistent context routing applies saved policies to delegated work. Includes Azure DevOps integration.",
       "An independent Copilot port of poteto's pstack for Cursor. Not an official GitHub product.",
     ],
     href: 'https://doublexmax.github.io/pstack-copilot/',

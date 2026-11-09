@@ -58,7 +58,10 @@ test('the portfolio presents pstack with its purpose, attribution, overview, and
   const article = screen.getByRole('heading', { name: 'pstack for GitHub Copilot' }).closest('article');
   const card = within(article);
   expect(card.getByText(
-    'Coordinate multiple agents in GitHub Copilot with engineering skills, playbooks, and Azure DevOps integration. Investigate bugs, review changes, and build features with explicit verification.'
+    'Custom agents, skills, and multi-agent playbooks for GitHub Copilot CLI and app. Investigate bugs, review changes, and build features with explicit verification.'
+  )).toBeInTheDocument();
+  expect(card.getByText(
+    "Double checks agents' claims and test changes against real artifacts. Persistent context routing applies saved policies to delegated work. Includes Azure DevOps integration."
   )).toBeInTheDocument();
   expect(card.getByText(
     "An independent Copilot port of poteto's pstack for Cursor. Not an official GitHub product."
