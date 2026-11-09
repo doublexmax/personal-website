@@ -5,4 +5,5 @@ export const images = {
   fischerRandom: '/images/fischer-random-banner.png',
   trainer: '/images/gto-trainer-banner.png',
   papplu: '/images/papplu-banner.svg',
+  pstack: '/images/pstack-copilot-banner.svg',
 };

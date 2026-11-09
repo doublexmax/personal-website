@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#08160f"/>
+  <rect x="32" y="32" width="896" height="476" rx="24" fill="#10271d" stroke="#345a47" stroke-width="2"/>
+  <text x="72" y="168" font-family="monospace" font-size="96" font-weight="700" fill="#9be9c6">pstack</text>
+  <text x="76" y="228" font-family="Arial,sans-serif" font-size="36" fill="#cedcd3">for GitHub Copilot</text>
+  <path d="M280 370h60m280 0h60" fill="none" stroke="#8ee5c3" stroke-width="4"/>
+  <path d="m326 360 14 10-14 10m340-20 14 10-14 10" fill="none" stroke="#8ee5c3" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="#173b2a" stroke="#345a47" stroke-width="2">
+    <rect x="72" y="320" width="208" height="100" rx="16"/>
+    <rect x="340" y="320" width="280" height="100" rx="16"/>
+    <rect x="680" y="320" width="208" height="100" rx="16"/>
+  </g>
+  <g font-family="Arial,sans-serif" font-size="28" text-anchor="middle">
+    <text x="176" y="380" fill="#cedcd3">Investigate</text>
+    <text x="480" y="380" fill="#cedcd3">Build</text>
+    <text x="784" y="380" fill="#ffc857">Verify</text>
+  </g>
+</svg>
