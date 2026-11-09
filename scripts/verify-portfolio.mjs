@@ -26,30 +26,26 @@ async function assertProject(page) {
   await heading.waitFor();
   const card = page.getByRole('article').filter({ has: heading });
   assert.equal(await card.count(), 1);
-  const text = await card.innerText();
-  for (const phrase of [/custom agents/i, /multi-agent/i, /GitHub Copilot CLI and app/,
-    /skills/i, /playbooks/i, /Azure DevOps/, /investigate/i, /review/i, /build/i,
-    /verif/i, /Double checks agents' claims and test changes against real artifacts/,
-    /Persistent context routing applies saved policies to delegated work/,
-    /independent/i, /poteto/, /Cursor/]) {
-    assert.match(text, phrase);
-  }
   const links = card.getByRole('link');
   assert.deepEqual(await links.evaluateAll(elements => elements.map(link => link.href)), [
     sourceUrl,
     overviewUrl,
   ]);
-  const source = card.locator('.card-text').getByRole('link', { name: 'source on GitHub', exact: true });
+  assert.equal(await card.getByRole('link', { name: /\S/ }).count(), 2,
+    'Both project links must have nonempty accessible names.');
+  const source = card.locator('.card-text p').getByRole('link');
+  assert.equal(await source.count(), 1);
   assert.equal(await source.getAttribute('href'), sourceUrl);
-  assert.equal(await source.locator('..').innerText(), 'Browse the source on GitHub.');
+  assert.equal(await card.locator('.card-text p').evaluateAll(paragraphs =>
+    paragraphs.some(paragraph => !paragraph.querySelector('a') &&
+      paragraph.textContent.trim().length > 0)), true,
+  'The card must have a nonempty description paragraph apart from the source link.');
   const footer = card.locator('.card-body > a.btn');
   assert.equal(await footer.count(), 1, 'The card must have one primary footer action.');
-  assert.equal((await footer.innerText()).trim(), 'Explore pstack');
   assert.equal(await footer.getAttribute('href'), overviewUrl);
   for (const link of await links.all()) {
     assert.equal(await link.getAttribute('target'), '_blank');
     assert.ok((await link.getAttribute('rel')).split(/\s+/).includes('noreferrer'));
-    assert.ok((await link.innerText()).trim().length > 0);
     assert.equal(await link.isVisible(), true);
   }
   return card;

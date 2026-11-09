@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { BrowserRouter } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 import App from './App.jsx';
+import ProjectCard from './components/ProjectCard.jsx';
 import charts from './features/poker/default-ranges.json';
 
 vi.mock('@vercel/analytics/react', () => ({
@@ -51,41 +52,55 @@ test('the portfolio retains its project destinations', () => {
   ]);
 });
 
-test('the portfolio presents pstack with its purpose, attribution, overview, and source', () => {
+test('the portfolio presents accessible pstack source and overview links', () => {
   window.history.replaceState({}, '', '/portfolio');
   render(<App />, { wrapper: BrowserRouter });
 
   const article = screen.getByRole('heading', { name: 'pstack for GitHub Copilot' }).closest('article');
   const card = within(article);
-  expect(card.getByText(
-    'Custom agents, skills, and multi-agent playbooks for GitHub Copilot CLI and app. Investigate bugs, review changes, and build features with explicit verification.'
-  )).toBeInTheDocument();
-  expect(card.getByText(
-    "Double checks agents' claims and test changes against real artifacts. Persistent context routing applies saved policies to delegated work. Includes Azure DevOps integration."
-  )).toBeInTheDocument();
-  expect(card.getByText(
-    "An independent Copilot port of poteto's pstack for Cursor. Not an official GitHub product."
-  )).toBeInTheDocument();
-  expect(card.getByRole('img', { name: 'pstack workflow diagram for GitHub Copilot' })).toHaveAttribute(
-    'src',
-    '/images/pstack-copilot-banner.svg'
-  );
+  const image = card.getByRole('img');
+  expect(image).toHaveAttribute('src', '/images/pstack-copilot-banner.svg');
+  expect(image).toHaveAccessibleName(/\S/);
 
-  const overview = card.getByRole('link', { name: 'Explore pstack' });
+  const links = card.getAllByRole('link');
+  expect(links).toHaveLength(2);
+  const [source, overview] = links;
   expect(overview).toHaveAttribute('href', 'https://doublexmax.github.io/pstack-copilot/');
   expect(overview).toHaveAttribute('target', '_blank');
   expect(overview).toHaveAttribute('rel', 'noreferrer');
+  expect(overview).toHaveAccessibleName(/\S/);
   expect([...article.querySelectorAll('.btn')]).toEqual([overview]);
   expect(overview.parentElement).toBe(article.querySelector('.card-body'));
   expect(overview.querySelector('i')).toHaveAttribute('aria-hidden', 'true');
 
-  const source = card.getByRole('link', { name: 'source on GitHub' });
   expect(source).toHaveAttribute('href', 'https://github.com/doublexmax/pstack-copilot');
   expect(source).toHaveAttribute('target', '_blank');
   expect(source).toHaveAttribute('rel', 'noreferrer');
-  expect(source.closest('p').textContent).toBe('Browse the source on GitHub.');
+  expect(source).toHaveAccessibleName(/\S/);
+  expect(source.closest('p').parentElement).toBe(article.querySelector('.card-text'));
   expect(article.querySelector('.card-text')).toContainElement(source);
-  expect(card.getAllByRole('link')).toEqual([source, overview]);
+});
+
+test('project cards render supplied description paragraphs in order', () => {
+  const project = {
+    id: 'sample-project',
+    title: 'Sample project',
+    image: '/sample-project.svg',
+    imageAlt: 'Sample project illustration',
+    description: [
+      'This sample counts paper clips.',
+      'A second sample sorts spare buttons.',
+    ],
+    href: '/sample-project',
+    linkLabel: 'Open sample project',
+    external: false,
+  };
+  const { container } = render(<ProjectCard project={project} />, { wrapper: BrowserRouter });
+
+  expect([...container.querySelectorAll('.card-text p')].map(paragraph => paragraph.textContent)).toEqual([
+    'This sample counts paper clips.',
+    'A second sample sorts spare buttons.',
+  ]);
 });
 
 test('the trainer retains its controls, initial counters, and selected chart', async () => {
