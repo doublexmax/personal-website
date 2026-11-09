@@ -2,19 +2,6 @@ import { images } from './images.js';
 
 export const projects = [
   {
-    id: 'dealer-school',
-    title: 'dealers.school',
-    image: images.dealerSchool,
-    imageAlt: 'Dealer School banner',
-    description: [
-      'An LMS for an online dealer school, where students can learn table games and other casino-related areas.',
-      'Connects to our in-person training center allowing students to view their on-site progression online.',
-    ],
-    href: 'https://dealers.school/',
-    linkLabel: 'Check it out',
-    external: true,
-  },
-  {
     id: 'fischer-random',
     title: 'A Fischer Random Chess Engine',
     image: images.fischerRandom,
