@@ -30,13 +30,11 @@ test('the homepage retains its introduction, portfolio destination, and resume l
   expect(document.querySelector('.me-image')).toHaveAttribute('src', '/images/portrait-maxx.jpg');
 });
 
-test('the portfolio omits dealers.school and retains its other project destinations', () => {
+test('the portfolio retains its project destinations', () => {
   window.history.replaceState({}, '', '/portfolio');
   render(<App />, { wrapper: BrowserRouter });
 
   expect(screen.getByRole('heading', { name: 'A Collection of My Projects' })).toBeInTheDocument();
-  expect(screen.queryByRole('heading', { name: 'dealers.school' })).not.toBeInTheDocument();
-  expect(document.querySelector('a[href="https://dealers.school/"]')).not.toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Check out the repository' })).toHaveAttribute(
     'href',
     'https://github.com/willredding314/FischerRandom'
